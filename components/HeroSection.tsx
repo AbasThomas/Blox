@@ -1,59 +1,68 @@
 "use client";
 
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { ParticleBackground } from "./ui/particle-background";
-import { CheckCircle2, ChevronRight } from "lucide-react";
+import { motion } from "framer-motion";
 
-const INNER_FEATURES = ["Resume", "Portfolio", "Analytics"];
-const OUTER_FEATURES = ["AI-Powered", "Automation", "Integrations", "Network"];
-
-// Animation Variants
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.15, delayChildren: 0.3 },
-  },
-};
-
-const fadeInUp = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } },
-};
-
-export default function HeroSection() {
-  const [formData, setFormData] = useState({ name: "", email: "" });
-  const [isSubmitted, setIsSubmitted] = useState(false);
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitted(true);
-    setTimeout(() => setIsSubmitted(false), 3000);
-    setFormData({ name: "", email: "" });
-  };
-
+export default function HeroBackground() {
   return (
-    <section className="py-24 bg-brand-navy relative overflow-hidden h-[100vh]">
-      {/* Background Decor */}
-      <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 -right-64 w-120 h-120 bg-brand-cyan/5 rounded-full blur-4xl" />
-        <div className="absolute bottom-1/4 -left-64 w-120 h-120 bg-brand-cyan-glow/5 rounded-full blur-5xl" />
-        
-        {/* Abstract Logo Grid Background */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] opacity-[0.03] rotate-12">
-            <div className="grid grid-cols-2 gap-4 w-full h-full">
-                <div className="bg-brand-cyan rounded-3xl" />
-                <div className="border-4 border-brand-cyan rounded-3xl" />
-                <div className="border-4 border-brand-cyan rounded-3xl" />
-                <div className="border-4 border-brand-cyan rounded-3xl" />
-            </div>
+    <div className="absolute inset-0 overflow-hidden pointer-events-none bg-brand-navy">
+      <div 
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full full opacity-40"
+        style={{
+          background: "radial-gradient(circle at center, rgba(49,197,244,0.25) 0%, rgba(49,197,244,0.12) 25%, rgba(49,197,244,0.06) 45%, transparent 70%)"
+        }}
+      />
+      <div
+        className="absolute inset-0 opacity-30"
+        style={{
+          background: "radial-gradient(1200px 1200px at 50% 50%, transparent 60%, rgba(2,6,23,0.6) 100% blur-[100px])"
+        }}
+      />
+
+      <motion.div
+        animate={{
+          scale: [1, 1.2, 1],
+          x: [0, 100, 0],
+          y: [0, 50, 0],
+        }}
+        transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute -top-[10%] -right-[10%] w-[500px] h-[500px] bg-brand-cyan/10 rounded-full"
+        style={{ filter: "blur(120px) drop-shadow(0 0 60px rgba(34,211,238,0.35))" }}
+      />
+
+      <motion.div
+        animate={{
+          scale: [1, 1.3, 1],
+          x: [0, -120, 0],
+          y: [0, -80, 0],
+        }}
+        transition={{ duration: 25, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+        className="absolute -bottom-[10%] -left-[10%] w-[600px] h-[600px] bg-brand-cyan-glow/10 rounded-full"
+        style={{ filter: "blur(150px) drop-shadow(0 0 80px rgba(34,211,238,0.3))" }}
+      />
+
+      <div 
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] opacity-[0.08]"
+        style={{
+          maskImage: "radial-gradient(circle, black 30%, transparent 80%)",
+          WebkitMaskImage: "radial-gradient(circle, black 30%, transparent 80%)"
+        }}
+      >
+        <div className="grid grid-cols-2 gap-8 w-full h-full ">
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 2 }}
+            className="bg-[#00ccff] rounded-[40px] shadow-[0_0_80px_rgba(49,197,244,0.35)]" 
+          />
+          <div className="border-[4px] border-[#00ccff] rounded-[40px] shadow-[0_0_35px_rgba(49,197,244,0.2)]" />
+          <div className="border-[4px] border-[#00ccff] rounded-[40px] shadow-[0_0_35px_rgba(49,197,244,0.2)]" />
+          <div className="border-[4px] border-[#00ccff] rounded-[40px] shadow-[0_0_35px_rgba(49,197,244,0.2)]" />
         </div>
       </div>
 
-    </section>
+      <div className="absolute inset-0 opacity-[0.03] mix-blend-overlay pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
+
+     
+    </div>
   );
 }
-
-// Reusable Orbit Component
-
