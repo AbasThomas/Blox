@@ -16,43 +16,54 @@ export default function HeroSection() {
 
   return (
     <section className="relative min-h-screen overflow-hidden bg-[#020617] text-slate-50 flex flex-col justify-center items-center">
-      <nav className={`fixed top-0 inset-x-0 z-50 px-6 py-6 transition-all duration-300 ${isScrolled ? "py-4" : "py-6"}`}>
-        <div className="mx-auto max-w-7xl">
-          <div className={`relative flex items-center justify-between rounded-full border px-6 py-3 transition-all duration-500 ${
+      <nav className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 ${isScrolled ? "py-4" : "py-6"}`}>
+        <div className="mx-auto max-w-7xl px-6">
+          <div className={`relative flex items-center justify-between transition-all duration-500 ${
             isScrolled 
-              ? "bg-transparent border-transparent shadow-none backdrop-blur-none" 
-              : "bg-slate-900/20 border-white/10 backdrop-blur-xl shadow-[0_8px_32px_rgba(0,0,0,0.12)]"
+              ? "bg-slate-900/60 backdrop-blur-xl border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.12)] rounded-full px-6 py-3" 
+              : "bg-transparent border-transparent px-0 py-2"
           }`}>
-            {/* Logo */}
-            <div className="flex items-center gap-3">
-              <div className="relative w-8 h-8 group overflow-hidden rounded-xl">
-                 <div className="absolute inset-0 bg-gradient-to-tr from-brand-cyan to-cyan-400 group-hover:scale-110 transition-transform duration-500" />
-                 <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity" />
+            {/* Logo - 2x2 Grid */}
+            <div className="flex items-center gap-3 group cursor-pointer">
+              <div className="grid grid-cols-2 gap-1 transition-transform duration-500 group-hover:rotate-180">
+                <div className="w-2.5 h-2.5 bg-brand-cyan rounded-[2px] shadow-[0_0_8px_rgba(34,211,238,0.6)]" />
+                <div className="w-2.5 h-2.5 border border-brand-cyan/80 rounded-[2px]" />
+                <div className="w-2.5 h-2.5 border border-brand-cyan/80 rounded-[2px]" />
+                <div className="w-2.5 h-2.5 border border-brand-cyan/80 rounded-[2px]" />
               </div>
               <span className="text-white font-bold tracking-tight text-lg">blox</span>
             </div>
 
             {/* Navigation Links */}
             <div className="hidden md:flex items-center gap-8">
-              {["Features", "Pricing", "Docs", "About"].map((item) => (
+              {[
+                { name: "Features", href: "#features" },
+                { name: "How it Works", href: "#how-it-works" },
+                { name: "Testimonials", href: "#testimonials" }
+              ].map((item) => (
                 <a 
-                  key={item} 
-                  href="#" 
+                  key={item.name} 
+                  href={item.href}
                   className="text-sm font-medium text-slate-300 hover:text-cyan-300 transition-colors relative group"
                 >
-                  {item}
+                  {item.name}
                   <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-cyan-400 transition-all group-hover:w-full" />
                 </a>
               ))}
             </div>
 
             {/* CTA Button */}
-            <button className="relative group overflow-hidden rounded-full bg-white/5 border border-white/10 px-6 py-2 transition-all hover:bg-brand-cyan/20 hover:border-brand-cyan/50 hover:shadow-[0_0_20px_rgba(34,211,238,0.3)]">
-              <span className="relative z-10 text-sm font-semibold text-white group-hover:text-cyan-300 transition-colors">
+            <button className={`relative group overflow-hidden rounded-full transition-all ${
+              isScrolled 
+                ? "bg-brand-cyan/10 border border-brand-cyan/20 hover:bg-brand-cyan/20" 
+                : "bg-white/5 border border-white/10 hover:bg-white/10"
+            } px-5 py-2`}>
+              <span className={`relative z-10 text-sm font-semibold transition-colors ${
+                isScrolled ? "text-brand-cyan" : "text-white"
+              }`}>
                 Get Access
               </span>
-              <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/10 to-transparent" />
-             </button>
+            </button>
           </div>
         </div>
       </nav>

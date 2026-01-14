@@ -11,11 +11,10 @@ export default function Home() {
   return (
     <main className="flex flex-col min-h-screen bg-brand-navy text-white selection:bg-brand-cyan selection:text-brand-navy overflow-hidden">
       <HeroSection />
-      <VisualFeatures />
-      <FeaturesSection />
-      <HowItWorksSection />
-      <TestimonialsSection />
-      <WaitlistSection />
+      <div id="features"><VisualFeatures /></div>
+      <div id="how-it-works"><HowItWorksSection /></div>
+      <div id="testimonials"><TestimonialsSection /></div>
+      <div id="waitlist"><WaitlistSection /></div>
       
       <footer className="py-12 bg-[#020617] text-center text-slate-600 text-sm border-t border-white/5">
         <div className="container mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-4">

@@ -1,198 +1,69 @@
 'use client';
 
 import React, { useState, useCallback, useMemo } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { WaitlistFormProps, FormData, FormErrors, FormState } from './types';
-import { formFieldVariants } from './styles/animations';
 
-/**
- * WaitlistForm Component
- * 
- * Minimalist form with email and name fields that drives the logo state changes.
- * Features real-time validation and premium styling consistent with the dark aesthetic.
- */
+// Enhanced Form Component
 const WaitlistForm: React.FC<WaitlistFormProps> = ({
   onStateChange,
   onSubmit,
   className = '',
 }) => {
-  const [formData, setFormData] = useState<FormData>({
-    email: '',
-    name: '',
-  });
-
+  const [formData, setFormData] = useState<FormData>({ email: '', name: '' });
   const [errors, setErrors] = useState<FormErrors>({});
-  const [touched, setTouched] = useState({
-    email: false,
-    name: false,
-  });
+  const [touched, setTouched] = useState({ email: false, name: false });
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [debounceTimer, setDebounceTimer] = useState<NodeJS.Timeout | null>(null);
+  const [focusedField, setFocusedField] = useState<string | null>(null);
 
-  // Memoized validation functions for performance
   const validateEmail = useMemo(() => (email: string): string | undefined => {
-    if (!email.trim()) {
-      return 'Email is required';
-    }
-    
+    if (!email.trim()) return 'Email is required';
     const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
-    
-    if (!emailRegex.test(email)) {
-      return 'Please enter a valid email address';
-    }
-    
+    if (!emailRegex.test(email)) return 'Please enter a valid email address';
     return undefined;
   }, []);
 
-  // Memoized name validation
   const validateName = useMemo(() => (name: string): string | undefined => {
-    if (!name.trim()) {
-      return 'Name is required';
-    }
-    
-    if (name.trim().length < 2) {
-      return 'Name must be at least 2 characters';
-    }
-    
+    if (!name.trim()) return 'Name is required';
+    if (name.trim().length < 2) return 'Name must be at least 2 characters';
     return undefined;
   }, []);
 
-  // Determine current form state for logo
   const getCurrentFormState = useCallback((email?: string, name?: string): FormState => {
     const currentEmail = email ?? formData.email;
     const currentName = name ?? formData.name;
-    
     const emailValid = !validateEmail(currentEmail);
     const nameValid = !validateName(currentName);
 
-    if (nameValid && emailValid) {
-      return 'name_entered';
-    } else if (emailValid) {
-      return 'email_valid';
-    }
-    
+    if (nameValid && emailValid) return 'name_entered';
+    if (emailValid) return 'email_valid';
     return 'initial';
-  }, [formData.email, formData.name, validateEmail, validateName]);
+  }, [formData, validateEmail, validateName]);
 
-  // Debounced validation for input changes
-  const debouncedValidationCallback = useCallback((field: keyof FormData, value: string) => {
-    if (debounceTimer) {
-      clearTimeout(debounceTimer);
-    }
-
-    const timer = setTimeout(() => {
-      const validator = field === 'email' ? validateEmail : validateName;
-      const error = validator(value);
-      
-      if (touched[field]) {
-        setErrors(prev => ({ ...prev, [field]: error }));
-      }
-
-      // Update logo state based on validation result
-      const newFormData = { ...formData, [field]: value };
-      const currentState = getCurrentFormState(newFormData.email, newFormData.name);
-      onStateChange(currentState, newFormData);
-    }, 300); // 300ms debounce
-
-    setDebounceTimer(timer);
-  }, [debounceTimer, formData, touched, getCurrentFormState, onStateChange, validateEmail, validateName]);
-
-  // Handle input changes with debounced validation
   const handleInputChange = (field: keyof FormData, value: string) => {
     const newFormData = { ...formData, [field]: value };
     setFormData(newFormData);
 
-    // Clear error when user starts typing
     if (errors[field]) {
       setErrors(prev => ({ ...prev, [field]: undefined }));
     }
 
-    // Immediate logo state update for better UX
     const immediateState = getCurrentFormState(newFormData.email, newFormData.name);
     onStateChange(immediateState, newFormData);
-
-    // Debounced validation
-    debouncedValidationCallback(field, value);
   };
 
-  // Handle field blur for immediate validation
   const handleBlur = (field: keyof FormData) => {
     setTouched(prev => ({ ...prev, [field]: true }));
-
-    // Clear any pending debounced validation
-    if (debounceTimer) {
-      clearTimeout(debounceTimer);
-      setDebounceTimer(null);
-    }
-
-    // Immediate validation on blur
+    setFocusedField(null);
     const validator = field === 'email' ? validateEmail : validateName;
     const error = validator(formData[field]);
-    
     setErrors(prev => ({ ...prev, [field]: error }));
-
-    // Update logo state
-    const currentState = getCurrentFormState();
-    onStateChange(currentState, formData);
   };
 
-  // Handle keyboard navigation
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    // Allow form submission with Enter key when focused on submit button
-    if (e.key === 'Enter' && e.target === e.currentTarget) {
-      e.preventDefault();
-      handleSubmit(e as any);
-    }
-    
-    // Escape key clears current field
-    if (e.key === 'Escape') {
-      const target = e.target as HTMLInputElement;
-      if (target.tagName === 'INPUT') {
-        target.blur();
-      }
-    }
-  };
-
-  // Announce form state changes to screen readers
-  const announceStateChange = (message: string) => {
-    const announcement = document.createElement('div');
-    announcement.setAttribute('aria-live', 'polite');
-    announcement.setAttribute('aria-atomic', 'true');
-    announcement.className = 'sr-only';
-    announcement.textContent = message;
-    
-    document.body.appendChild(announcement);
-    
-    setTimeout(() => {
-      document.body.removeChild(announcement);
-    }, 1000);
-  };
-
-  // Announce logo state changes
-  React.useEffect(() => {
-    const currentState = getCurrentFormState();
-    
-    switch (currentState) {
-      case 'email_valid':
-        announceStateChange('Email validated. Logo block activated.');
-        break;
-      case 'name_entered':
-        announceStateChange('Name entered. Additional logo block activated.');
-        break;
-      case 'submitted':
-        announceStateChange('Form submitted. Logo completion sequence started.');
-        break;
-    }
-  }, [formData.email, formData.name, getCurrentFormState]);
-
-  // Handle form submission
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    // Validate all fields
+  const handleSubmit = async () => {
     const emailError = validateEmail(formData.email);
     const nameError = validateName(formData.name);
-    
+
     if (emailError || nameError) {
       setErrors({ email: emailError, name: nameError });
       setTouched({ email: true, name: true });
@@ -204,153 +75,256 @@ const WaitlistForm: React.FC<WaitlistFormProps> = ({
 
     try {
       await onSubmit(formData);
-      // Success state would be handled by parent component
     } catch (error) {
       console.error('Submission error:', error);
-      // Error handling would reset to previous state
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  // Get field animation state
-  const getFieldState = (field: keyof FormData) => {
-    if (errors[field] && touched[field]) return 'error';
-    if (field === 'email' && !validateEmail(formData[field])) return 'valid';
-    if (field === 'name' && !validateName(formData[field])) return 'valid';
-    return 'idle';
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      if (isFormValid) {
+        handleSubmit();
+      }
+    }
   };
 
+  const isFormValid = !validateEmail(formData.email) && !validateName(formData.name);
+
   return (
-    <form 
-      onSubmit={handleSubmit} 
-      onKeyDown={handleKeyDown}
-      className={`space-y-6 ${className}`}
-      noValidate
-      role="form"
-      aria-label="Join waitlist form"
-    >
+    <div className={`space-y-5 ${className}`}>
       {/* Email Field */}
-      <div className="space-y-2 group">
+      <div className="space-y-2">
         <label 
           htmlFor="email" 
-          className="block text-xs font-semibold uppercase tracking-wider text-slate-400 group-focus-within:text-brand-cyan transition-colors"
+          className="block text-xs font-bold uppercase tracking-widest text-slate-400 transition-colors duration-300"
         >
-          Email <span className="text-red-400" aria-label="required">*</span>
+          Email Address
         </label>
-        <div className="relative">
-            <motion.input
+        <div className="relative group">
+          <motion.div
+            animate={{
+              scale: focusedField === 'email' ? 1.02 : 1,
+            }}
+            transition={{ duration: 0.2 }}
+          >
+            <input
               id="email"
               type="email"
               value={formData.email}
               onChange={(e) => handleInputChange('email', e.target.value)}
+              onFocus={() => setFocusedField('email')}
               onBlur={() => handleBlur('email')}
-              variants={formFieldVariants}
-              animate={getFieldState('email')}
-              className="w-full px-4 py-4 bg-white/5 border border-white/10 rounded-xl text-white placeholder-slate-600 focus:outline-none focus:bg-brand-cyan/5 focus:border-brand-cyan/50 transition-all duration-300"
-              placeholder="name@example.com"
-              required
+              onKeyPress={handleKeyPress}
+              className={`w-full px-5 py-4 bg-white/5 border-2 rounded-2xl text-white placeholder-slate-500 focus:outline-none transition-all duration-300 ${
+                errors.email && touched.email
+                  ? 'border-red-500/50 focus:border-red-500 bg-red-500/5'
+                  : focusedField === 'email'
+                  ? 'border-cyan-500/50 bg-cyan-500/5 shadow-[0_0_20px_rgba(34,211,238,0.1)]'
+                  : 'border-white/10 hover:border-white/20'
+              }`}
+              placeholder="you@example.com"
               disabled={isSubmitting}
-              aria-invalid={errors.email && touched.email ? 'true' : 'false'}
-              aria-describedby={errors.email && touched.email ? 'email-error' : 'email-help'}
               autoComplete="email"
             />
-             {/* Glow effect on focus */}
-             <div className="absolute inset-0 rounded-xl bg-brand-cyan/20 blur-xl opacity-0 group-focus-within:opacity-100 transition-opacity duration-500 -z-10" />
+          </motion.div>
+
+          {/* Enhanced focus glow */}
+          <motion.div 
+            className="absolute inset-0 rounded-2xl -z-10 blur-xl"
+            animate={{
+              opacity: focusedField === 'email' ? 0.3 : 0,
+              scale: focusedField === 'email' ? 1.1 : 1,
+            }}
+            style={{
+              background: errors.email && touched.email 
+                ? 'rgba(239, 68, 68, 0.3)' 
+                : 'rgba(34, 211, 238, 0.3)'
+            }}
+          />
+
+          {/* Success checkmark */}
+          <AnimatePresence>
+            {!errors.email && formData.email && touched.email && (
+              <motion.div
+                initial={{ scale: 0, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0, opacity: 0 }}
+                className="absolute right-4 top-1/2 -translate-y-1/2 w-6 h-6 bg-green-500/20 rounded-full flex items-center justify-center"
+              >
+                <svg className="w-4 h-4 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                </svg>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
-        
-        <div id="email-help" className="sr-only">
-          Enter a valid email address to join the waitlist
-        </div>
-        {errors.email && touched.email && (
-          <motion.p
-            id="email-error"
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-sm text-red-400 pl-1"
-            role="alert"
-            aria-live="polite"
-          >
-            {errors.email}
-          </motion.p>
-        )}
+
+        <AnimatePresence mode="wait">
+          {errors.email && touched.email && (
+            <motion.p
+              initial={{ opacity: 0, y: -10, height: 0 }}
+              animate={{ opacity: 1, y: 0, height: 'auto' }}
+              exit={{ opacity: 0, y: -10, height: 0 }}
+              className="text-sm text-red-400 pl-1 flex items-center gap-2"
+            >
+              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+              </svg>
+              {errors.email}
+            </motion.p>
+          )}
+        </AnimatePresence>
       </div>
 
       {/* Name Field */}
-      <div className="space-y-2 group">
+      <div className="space-y-2">
         <label 
           htmlFor="name" 
-          className="block text-xs font-semibold uppercase tracking-wider text-slate-400 group-focus-within:text-brand-cyan transition-colors"
+          className="block text-xs font-bold uppercase tracking-widest text-slate-400 transition-colors duration-300"
         >
-          Name <span className="text-red-400" aria-label="required">*</span>
+          Full Name
         </label>
-        <div className="relative">
-            <motion.input
+        <div className="relative group">
+          <motion.div
+            animate={{
+              scale: focusedField === 'name' ? 1.02 : 1,
+            }}
+            transition={{ duration: 0.2 }}
+          >
+            <input
               id="name"
               type="text"
               value={formData.name}
               onChange={(e) => handleInputChange('name', e.target.value)}
+              onFocus={() => setFocusedField('name')}
               onBlur={() => handleBlur('name')}
-              variants={formFieldVariants}
-              animate={getFieldState('name')}
-              className="w-full px-4 py-4 bg-white/5 border border-white/10 rounded-xl text-white placeholder-slate-600 focus:outline-none focus:bg-brand-cyan/5 focus:border-brand-cyan/50 transition-all duration-300"
-              placeholder="Your full name"
-              required
+              onKeyPress={handleKeyPress}
+              className={`w-full px-5 py-4 bg-white/5 border-2 rounded-2xl text-white placeholder-slate-500 focus:outline-none transition-all duration-300 ${
+                errors.name && touched.name
+                  ? 'border-red-500/50 focus:border-red-500 bg-red-500/5'
+                  : focusedField === 'name'
+                  ? 'border-cyan-500/50 bg-cyan-500/5 shadow-[0_0_20px_rgba(34,211,238,0.1)]'
+                  : 'border-white/10 hover:border-white/20'
+              }`}
+              placeholder="John Doe"
               disabled={isSubmitting}
-              aria-invalid={errors.name && touched.name ? 'true' : 'false'}
-              aria-describedby={errors.name && touched.name ? 'name-error' : 'name-help'}
-              autoComplete="given-name"
+              autoComplete="name"
             />
-            {/* Glow effect on focus */}
-            <div className="absolute inset-0 rounded-xl bg-brand-cyan/20 blur-xl opacity-0 group-focus-within:opacity-100 transition-opacity duration-500 -z-10" />
+          </motion.div>
+
+          {/* Enhanced focus glow */}
+          <motion.div 
+            className="absolute inset-0 rounded-2xl -z-10 blur-xl"
+            animate={{
+              opacity: focusedField === 'name' ? 0.3 : 0,
+              scale: focusedField === 'name' ? 1.1 : 1,
+            }}
+            style={{
+              background: errors.name && touched.name 
+                ? 'rgba(239, 68, 68, 0.3)' 
+                : 'rgba(34, 211, 238, 0.3)'
+            }}
+          />
+
+          {/* Success checkmark */}
+          <AnimatePresence>
+            {!errors.name && formData.name && touched.name && (
+              <motion.div
+                initial={{ scale: 0, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0, opacity: 0 }}
+                className="absolute right-4 top-1/2 -translate-y-1/2 w-6 h-6 bg-green-500/20 rounded-full flex items-center justify-center"
+              >
+                <svg className="w-4 h-4 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                </svg>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
-        <div id="name-help" className="sr-only">
-          Enter your name (minimum 2 characters)
-        </div>
-        {errors.name && touched.name && (
-          <motion.p
-            id="name-error"
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-sm text-red-400 pl-1"
-            role="alert"
-            aria-live="polite"
-          >
-            {errors.name}
-          </motion.p>
-        )}
+
+        <AnimatePresence mode="wait">
+          {errors.name && touched.name && (
+            <motion.p
+              initial={{ opacity: 0, y: -10, height: 0 }}
+              animate={{ opacity: 1, y: 0, height: 'auto' }}
+              exit={{ opacity: 0, y: -10, height: 0 }}
+              className="text-sm text-red-400 pl-1 flex items-center gap-2"
+            >
+              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+              </svg>
+              {errors.name}
+            </motion.p>
+          )}
+        </AnimatePresence>
       </div>
 
       {/* Submit Button */}
       <motion.button
-        type="submit"
-        disabled={isSubmitting || !!validateEmail(formData.email) || !!validateName(formData.name)}
-        className="group relative w-full px-6 py-4 bg-brand-cyan hover:bg-brand-cyan-glow disabled:bg-gray-800 disabled:text-gray-500 disabled:cursor-not-allowed text-brand-navy font-bold rounded-xl transition-all duration-300 overflow-hidden shadow-[0_0_20px_rgba(34,211,238,0.3)] hover:shadow-[0_0_30px_rgba(34,211,238,0.5)] disabled:shadow-none"
-        whileHover={{ scale: 1.01 }}
-        whileTap={{ scale: 0.98 }}
-        aria-describedby="submit-help"
+        onClick={handleSubmit}
+        disabled={isSubmitting || !isFormValid}
+        className="relative w-full mt-8 group"
+        whileHover={{ scale: isFormValid && !isSubmitting ? 1.02 : 1 }}
+        whileTap={{ scale: isFormValid && !isSubmitting ? 0.98 : 1 }}
       >
-        {/* Shimmer Effect */}
-        <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/30 to-transparent pointer-events-none" />
-        
-        {isSubmitting ? (
-          <div className="flex items-center justify-center gap-2">
-            <div className="w-5 h-5 border-2 border-brand-navy/30 border-t-brand-navy rounded-full animate-spin" />
-            <span>Joining...</span>
+        <div className={`relative px-6 py-4 rounded-2xl font-bold text-lg transition-all duration-300 overflow-hidden ${
+          isSubmitting || !isFormValid
+            ? 'bg-slate-800 text-slate-500 cursor-not-allowed'
+            : 'bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-[0_0_30px_rgba(34,211,238,0.4)] hover:shadow-[0_0_40px_rgba(34,211,238,0.6)]'
+        }`}>
+          {/* Animated shimmer */}
+          {isFormValid && !isSubmitting && (
+            <motion.div
+              className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent"
+              animate={{ x: ['-200%', '200%'] }}
+              transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+            />
+          )}
+
+          {/* Button content */}
+          <div className="relative flex items-center justify-center gap-3">
+            {isSubmitting ? (
+              <>
+                <motion.div
+                  className="w-5 h-5 border-2 border-slate-600 border-t-slate-400 rounded-full"
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                />
+                <span>Joining Waitlist...</span>
+              </>
+            ) : (
+              <>
+                <span>Join the Waitlist</span>
+                <motion.svg 
+                  className="w-5 h-5" 
+                  fill="none" 
+                  stroke="currentColor" 
+                  viewBox="0 0 24 24"
+                  animate={{ x: isFormValid ? [0, 4, 0] : 0 }}
+                  transition={{ duration: 1.5, repeat: Infinity }}
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </motion.svg>
+              </>
+            )}
           </div>
-        ) : (
-          <span className="flex items-center justify-center gap-2">
-            Join Waitlist
-            <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-            </svg>
-          </span>
+        </div>
+
+        {/* Glow effect */}
+        {isFormValid && !isSubmitting && (
+          <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-cyan-500 to-blue-600 blur-xl opacity-50 group-hover:opacity-70 transition-opacity -z-10" />
         )}
       </motion.button>
-      <div id="submit-help" className="sr-only">
-        Submit the form to join the waitlist. Button will be enabled when all required fields are valid.
-      </div>
-    </form>
+
+      {/* Privacy note */}
+      <p className="text-xs text-slate-500 text-center mt-4 leading-relaxed">
+        By joining, you agree to receive updates. We respect your privacy.
+      </p>
+    </div>
   );
 };
 
