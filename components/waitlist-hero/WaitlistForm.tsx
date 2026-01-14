@@ -231,35 +231,34 @@ const WaitlistForm: React.FC<WaitlistFormProps> = ({
       aria-label="Join waitlist form"
     >
       {/* Email Field */}
-      <div className="space-y-2">
+      <div className="space-y-2 group">
         <label 
           htmlFor="email" 
-          className="block text-sm font-medium text-gray-300"
+          className="block text-xs font-semibold uppercase tracking-wider text-slate-400 group-focus-within:text-brand-cyan transition-colors"
         >
           Email <span className="text-red-400" aria-label="required">*</span>
         </label>
-        <motion.input
-          id="email"
-          type="email"
-          value={formData.email}
-          onChange={(e) => handleInputChange('email', e.target.value)}
-          onBlur={() => handleBlur('email')}
-          onFocus={() => {
-            // Announce form field focus to screen readers
-            if (errors.email && touched.email) {
-              // Screen reader will announce the error via aria-describedby
-            }
-          }}
-          variants={formFieldVariants}
-          animate={getFieldState('email')}
-          className="w-full px-4 py-3 bg-gray-900/50 border rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-0 transition-colors"
-          placeholder="Enter your email"
-          required
-          disabled={isSubmitting}
-          aria-invalid={errors.email && touched.email ? 'true' : 'false'}
-          aria-describedby={errors.email && touched.email ? 'email-error' : 'email-help'}
-          autoComplete="email"
-        />
+        <div className="relative">
+            <motion.input
+              id="email"
+              type="email"
+              value={formData.email}
+              onChange={(e) => handleInputChange('email', e.target.value)}
+              onBlur={() => handleBlur('email')}
+              variants={formFieldVariants}
+              animate={getFieldState('email')}
+              className="w-full px-4 py-4 bg-white/5 border border-white/10 rounded-xl text-white placeholder-slate-600 focus:outline-none focus:bg-brand-cyan/5 focus:border-brand-cyan/50 transition-all duration-300"
+              placeholder="name@example.com"
+              required
+              disabled={isSubmitting}
+              aria-invalid={errors.email && touched.email ? 'true' : 'false'}
+              aria-describedby={errors.email && touched.email ? 'email-error' : 'email-help'}
+              autoComplete="email"
+            />
+             {/* Glow effect on focus */}
+             <div className="absolute inset-0 rounded-xl bg-brand-cyan/20 blur-xl opacity-0 group-focus-within:opacity-100 transition-opacity duration-500 -z-10" />
+        </div>
+        
         <div id="email-help" className="sr-only">
           Enter a valid email address to join the waitlist
         </div>
@@ -268,7 +267,7 @@ const WaitlistForm: React.FC<WaitlistFormProps> = ({
             id="email-error"
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-sm text-red-400"
+            className="text-sm text-red-400 pl-1"
             role="alert"
             aria-live="polite"
           >
@@ -278,35 +277,33 @@ const WaitlistForm: React.FC<WaitlistFormProps> = ({
       </div>
 
       {/* Name Field */}
-      <div className="space-y-2">
+      <div className="space-y-2 group">
         <label 
           htmlFor="name" 
-          className="block text-sm font-medium text-gray-300"
+          className="block text-xs font-semibold uppercase tracking-wider text-slate-400 group-focus-within:text-brand-cyan transition-colors"
         >
           Name <span className="text-red-400" aria-label="required">*</span>
         </label>
-        <motion.input
-          id="name"
-          type="text"
-          value={formData.name}
-          onChange={(e) => handleInputChange('name', e.target.value)}
-          onBlur={() => handleBlur('name')}
-          onFocus={() => {
-            // Announce form field focus to screen readers
-            if (errors.name && touched.name) {
-              // Screen reader will announce the error via aria-describedby
-            }
-          }}
-          variants={formFieldVariants}
-          animate={getFieldState('name')}
-          className="w-full px-4 py-3 bg-gray-900/50 border rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-0 transition-colors"
-          placeholder="Enter your name"
-          required
-          disabled={isSubmitting}
-          aria-invalid={errors.name && touched.name ? 'true' : 'false'}
-          aria-describedby={errors.name && touched.name ? 'name-error' : 'name-help'}
-          autoComplete="given-name"
-        />
+        <div className="relative">
+            <motion.input
+              id="name"
+              type="text"
+              value={formData.name}
+              onChange={(e) => handleInputChange('name', e.target.value)}
+              onBlur={() => handleBlur('name')}
+              variants={formFieldVariants}
+              animate={getFieldState('name')}
+              className="w-full px-4 py-4 bg-white/5 border border-white/10 rounded-xl text-white placeholder-slate-600 focus:outline-none focus:bg-brand-cyan/5 focus:border-brand-cyan/50 transition-all duration-300"
+              placeholder="Your full name"
+              required
+              disabled={isSubmitting}
+              aria-invalid={errors.name && touched.name ? 'true' : 'false'}
+              aria-describedby={errors.name && touched.name ? 'name-error' : 'name-help'}
+              autoComplete="given-name"
+            />
+            {/* Glow effect on focus */}
+            <div className="absolute inset-0 rounded-xl bg-brand-cyan/20 blur-xl opacity-0 group-focus-within:opacity-100 transition-opacity duration-500 -z-10" />
+        </div>
         <div id="name-help" className="sr-only">
           Enter your name (minimum 2 characters)
         </div>
@@ -315,7 +312,7 @@ const WaitlistForm: React.FC<WaitlistFormProps> = ({
             id="name-error"
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-sm text-red-400"
+            className="text-sm text-red-400 pl-1"
             role="alert"
             aria-live="polite"
           >
@@ -328,18 +325,26 @@ const WaitlistForm: React.FC<WaitlistFormProps> = ({
       <motion.button
         type="submit"
         disabled={isSubmitting || !!validateEmail(formData.email) || !!validateName(formData.name)}
-        className="w-full px-6 py-3 bg-cyan-500 hover:bg-cyan-400 disabled:bg-gray-700 disabled:cursor-not-allowed text-white font-medium rounded-xl transition-colors focus:outline-none focus:ring-2 focus:ring-cyan-500/50"
-        whileHover={{ scale: 1.02 }}
+        className="group relative w-full px-6 py-4 bg-brand-cyan hover:bg-brand-cyan-glow disabled:bg-gray-800 disabled:text-gray-500 disabled:cursor-not-allowed text-brand-navy font-bold rounded-xl transition-all duration-300 overflow-hidden shadow-[0_0_20px_rgba(34,211,238,0.3)] hover:shadow-[0_0_30px_rgba(34,211,238,0.5)] disabled:shadow-none"
+        whileHover={{ scale: 1.01 }}
         whileTap={{ scale: 0.98 }}
         aria-describedby="submit-help"
       >
+        {/* Shimmer Effect */}
+        <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/30 to-transparent pointer-events-none" />
+        
         {isSubmitting ? (
-          <>
-            <span className="sr-only">Submitting form, please wait</span>
-            <span aria-hidden="true">Joining...</span>
-          </>
+          <div className="flex items-center justify-center gap-2">
+            <div className="w-5 h-5 border-2 border-brand-navy/30 border-t-brand-navy rounded-full animate-spin" />
+            <span>Joining...</span>
+          </div>
         ) : (
-          'Join Waitlist'
+          <span className="flex items-center justify-center gap-2">
+            Join Waitlist
+            <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            </svg>
+          </span>
         )}
       </motion.button>
       <div id="submit-help" className="sr-only">

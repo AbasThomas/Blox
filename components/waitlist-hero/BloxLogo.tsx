@@ -170,9 +170,6 @@ const BloxLogo: React.FC<BloxLogoProps> = ({
           style={{
             background: 'radial-gradient(circle, rgba(0, 209, 255, 0.1) 0%, transparent 70%)',
           }}
-          onAnimationComplete={() => {
-            // Cleanup after halo animation
-          }}
         />
       )}
 
@@ -185,117 +182,51 @@ const BloxLogo: React.FC<BloxLogoProps> = ({
         role="img"
         aria-label="Blox logo - interactive progress indicator"
       >
-        {/* Block A - Top Left (Brand Anchor) */}
-        <motion.div
-          className={`${blockSizeClasses[size]} relative overflow-hidden`}
-          variants={blockVariants}
-          animate={getBlockState('A')}
-          style={{
-            backgroundColor: getBlockState('A') === 'brandAnchor' || getBlockState('A') === 'synchronizing' 
-              ? '#00d1ff' 
-              : '#1f2937',
-            borderColor: getBlockState('A') === 'brandAnchor' || getBlockState('A') === 'synchronizing'
-              ? '#00d1ff'
-              : '#374151',
-            borderWidth: '1px',
-            borderStyle: 'solid',
-          }}
-          aria-label="Block A - Brand anchor, always active"
-        >
-          {/* Inner glow effect for active state */}
-          {(getBlockState('A') === 'brandAnchor' || getBlockState('A') === 'synchronizing') && (
-            <div 
-              className="absolute inset-0 opacity-20"
-              style={{
-                background: 'radial-gradient(circle at center, rgba(0, 209, 255, 0.8) 0%, transparent 70%)',
-              }}
-            />
-          )}
-        </motion.div>
-
-        {/* Block B - Top Right (Name Entry) */}
-        <motion.div
-          className={`${blockSizeClasses[size]} relative overflow-hidden`}
-          variants={blockVariants}
-          animate={getBlockState('B')}
-          style={{
-            backgroundColor: getBlockState('B') === 'active' || getBlockState('B') === 'synchronizing'
-              ? '#00d1ff'
-              : '#1f2937',
-            borderColor: getBlockState('B') === 'active' || getBlockState('B') === 'synchronizing'
-              ? '#00d1ff'
-              : '#374151',
-            borderWidth: '1px',
-            borderStyle: 'solid',
-          }}
-          aria-label="Block B - Activates when name is entered"
-        >
-          {/* Inner glow effect for active state */}
-          {(getBlockState('B') === 'active' || getBlockState('B') === 'synchronizing') && (
-            <div 
-              className="absolute inset-0 opacity-20"
-              style={{
-                background: 'radial-gradient(circle at center, rgba(0, 209, 255, 0.8) 0%, transparent 70%)',
-              }}
-            />
-          )}
-        </motion.div>
-
-        {/* Block C - Bottom Left (Email Entry) */}
-        <motion.div
-          className={`${blockSizeClasses[size]} relative overflow-hidden`}
-          variants={blockVariants}
-          animate={getBlockState('C')}
-          style={{
-            backgroundColor: getBlockState('C') === 'active' || getBlockState('C') === 'synchronizing'
-              ? '#00d1ff'
-              : '#1f2937',
-            borderColor: getBlockState('C') === 'active' || getBlockState('C') === 'synchronizing'
-              ? '#00d1ff'
-              : '#374151',
-            borderWidth: '1px',
-            borderStyle: 'solid',
-          }}
-          aria-label="Block C - Activates when valid email is entered"
-        >
-          {/* Inner glow effect for active state */}
-          {(getBlockState('C') === 'active' || getBlockState('C') === 'synchronizing') && (
-            <div 
-              className="absolute inset-0 opacity-20"
-              style={{
-                background: 'radial-gradient(circle at center, rgba(0, 209, 255, 0.8) 0%, transparent 70%)',
-              }}
-            />
-          )}
-        </motion.div>
-
-        {/* Block D - Bottom Right (Submission) */}
-        <motion.div
-          className={`${blockSizeClasses[size]} relative overflow-hidden`}
-          variants={blockVariants}
-          animate={getBlockState('D')}
-          style={{
-            backgroundColor: getBlockState('D') === 'active' || getBlockState('D') === 'synchronizing'
-              ? '#00d1ff'
-              : '#1f2937',
-            borderColor: getBlockState('D') === 'active' || getBlockState('D') === 'synchronizing'
-              ? '#00d1ff'
-              : '#374151',
-            borderWidth: '1px',
-            borderStyle: 'solid',
-          }}
-          aria-label="Block D - Activates on form submission"
-        >
-          {/* Inner glow effect for active state */}
-          {(getBlockState('D') === 'active' || getBlockState('D') === 'synchronizing') && (
-            <div 
-              className="absolute inset-0 opacity-20"
-              style={{
-                background: 'radial-gradient(circle at center, rgba(0, 209, 255, 0.8) 0%, transparent 70%)',
-              }}
-            />
-          )}
-        </motion.div>
+        {/* Render Blocks A, B, C, D */}
+        {(['A', 'B', 'C', 'D'] as const).map((blockId) => {
+            const blockState = getBlockState(blockId);
+            const isActive = blockState === 'active' || blockState === 'brandAnchor' || blockState === 'synchronizing';
+            
+            return (
+                <motion.div
+                    key={blockId}
+                    className={`${blockSizeClasses[size]} relative overflow-hidden`}
+                    variants={blockVariants}
+                    animate={blockState}
+                    style={{
+                        backgroundColor: isActive ? '#00d1ff' : '#1f2937',
+                        borderColor: isActive ? '#00d1ff' : '#374151',
+                        borderWidth: '1px',
+                        borderStyle: 'solid',
+                        boxShadow: isActive ? '0 0 20px rgba(0, 209, 255, 0.4)' : 'none', // Intensified glow
+                    }}
+                    aria-label={`Block ${blockId}`}
+                >
+                    {/* Inner glow effect for active state */}
+                    {isActive && (
+                        <>
+                        <div 
+                            className="absolute inset-0 opacity-40 mix-blend-screen"
+                            style={{
+                                background: 'radial-gradient(circle at center, rgba(255, 255, 255, 0.8) 0%, transparent 70%)',
+                            }}
+                        />
+                        {/* Particle Effects (Simplified Simulation) */}
+                        <motion.div 
+                            className="absolute inset-0"
+                            animate={{ opacity: [0.3, 0.6, 0.3] }}
+                            transition={{ duration: 2, repeat: Infinity }}
+                            style={{
+                                backgroundImage: 'radial-gradient(circle, rgba(255,255,255,0.8) 1px, transparent 1px)',
+                                backgroundSize: '8px 8px',
+                                opacity: 0.3
+                            }}
+                        />
+                        </>
+                    )}
+                </motion.div>
+            );
+        })}
       </motion.div>
     </div>
   );
