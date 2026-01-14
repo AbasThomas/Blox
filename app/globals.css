@@ -8,6 +8,9 @@
 }
 
 @layer base {
+  html {
+    scroll-behavior: smooth;
+  }
   body {
     background-color: var(--color-brand-navy);
     color: white;
@@ -22,13 +25,24 @@
   .bg-glow {
     box-shadow: 0 0 40px rgba(49, 197, 244, 0.15);
   }
+  
+  .animate-shine {
+    animation: shine 2s infinite;
+  }
 }
+
 @keyframes gradient-x {
   0%, 100% {
     background-position: 0% 50%;
   }
   50% {
     background-position: 100% 50%;
+  }
+}
+
+@keyframes shine {
+  100% {
+    left: 125%;
   }
 }
 

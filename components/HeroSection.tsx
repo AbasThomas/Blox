@@ -39,7 +39,7 @@ export default function HeroSection() {
               {[
                 { name: "Features", href: "#features" },
                 { name: "How it Works", href: "#how-it-works" },
-                { name: "Testimonials", href: "#testimonials" }
+                // { name: "Testimonials", href: "#testimonials" }
               ].map((item) => (
                 <a 
                   key={item.name} 
@@ -53,17 +53,19 @@ export default function HeroSection() {
             </div>
 
             {/* CTA Button */}
-            <button className={`relative group overflow-hidden rounded-full transition-all ${
-              isScrolled 
-                ? "bg-brand-cyan/10 border border-brand-cyan/20 hover:bg-brand-cyan/20" 
-                : "bg-white/5 border border-white/10 hover:bg-white/10"
-            } px-5 py-2`}>
-              <span className={`relative z-10 text-sm font-semibold transition-colors ${
-                isScrolled ? "text-brand-cyan" : "text-white"
-              }`}>
-                Get Access
-              </span>
-            </button>
+            <a href="#waitlist">
+              <button className={`relative group overflow-hidden rounded-full transition-all ${
+                isScrolled 
+                  ? "bg-brand-cyan/10 border border-brand-cyan/20 hover:bg-brand-cyan/20" 
+                  : "bg-white/5 border border-white/10 hover:bg-white/10"
+              } px-5 py-2`}>
+                <span className={`relative z-10 text-sm font-semibold transition-colors ${
+                  isScrolled ? "text-brand-cyan" : "text-white"
+                }`}>
+                  Get Access
+                </span>
+              </button>
+            </a>
           </div>
         </div>
       </nav>
@@ -251,6 +253,7 @@ function HeroContent() {
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           className="group relative rounded-full bg-white/5 border border-white/10 px-8 py-4 md:px-10 md:py-5 transition-all duration-300 overflow-hidden hover:bg-brand-cyan/20 hover:border-brand-cyan/50 hover:shadow-[0_0_30px_rgba(34,211,238,0.25)]"
+          onClick={() => document.getElementById('waitlist')?.scrollIntoView({ behavior: 'smooth' })}
         >
           {/* Shimmer effect */}
           <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/10 to-transparent" />

@@ -14,6 +14,6 @@ export type {
   LogoState,
   AnimationState,
 } from './types';
-
+  
 // Export hooks
 export { useFormState, useLogoAnimation } from './hooks';

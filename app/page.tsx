@@ -6,14 +6,16 @@ import FeaturesSection from "@/components/FeaturesSection";
 import HowItWorksSection from "@/components/HowItWorksSection";
 import { TestimonialsSection } from "@/components/ui/testimonials-section";
 import WaitlistSection from "@/components/WaitlistSection";
+import { ParticleBackground } from "@/components/ui/particle-background";
 
 export default function Home() {
   return (
-    <main className="flex flex-col min-h-screen bg-brand-navy text-white selection:bg-brand-cyan selection:text-brand-navy overflow-hidden">
+    <main className="flex flex-col min-h-screen bg-brand-navy text-white selection:bg-brand-cyan selection:text-brand-navy overflow-hidden relative">
+      <ParticleBackground />
       <HeroSection />
       <div id="features"><VisualFeatures /></div>
       <div id="how-it-works"><HowItWorksSection /></div>
-      <div id="testimonials"><TestimonialsSection /></div>
+      {/* <div id="testimonials"><TestimonialsSection /></div> */}
       <div id="waitlist"><WaitlistSection /></div>
       
       <footer className="py-12 bg-[#020617] text-center text-slate-600 text-sm border-t border-white/5">

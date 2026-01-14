@@ -121,7 +121,7 @@ function FeatureCard({ feature, index }: { feature: any, index: number }) {
         </p>
       </div>
 
-      {/* Hover Glow */}
+      {/* Hover Glow */}  
       <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
     </motion.div>
   );

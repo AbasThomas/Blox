@@ -35,17 +35,9 @@ const WaitlistHero: React.FC<WaitlistHeroProps> = ({
   return (
     <div className={`relative w-full overflow-hidden flex flex-col items-center justify-center py-20 md:py-32 ${className}`}>
       {/* Enhanced Background */}
+      {/* Background - Clean */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        {/* Gradient orbs */}
-        <div className="absolute top-1/4 -right-40 w-[800px] h-[800px] bg-gradient-radial from-cyan-500/20 via-cyan-500/5 to-transparent rounded-full blur-3xl animate-pulse" />
-        <div className="absolute bottom-1/4 -left-40 w-[700px] h-[700px] bg-gradient-radial from-blue-500/15 via-blue-500/5 to-transparent rounded-full blur-3xl" style={{ animationDelay: '1s' }} />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-radial from-purple-500/10 to-transparent rounded-full blur-3xl" />
-        
-        {/* Grid overlay */}
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(34,211,238,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(34,211,238,0.03)_1px,transparent_1px)] bg-[size:64px_64px]" />
-        
-        {/* Noise texture */}
-        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.015]" />
+        {/* Subtle dark gradient for depth if needed, or just clean */}
       </div>
 
       <div className="container mx-auto px-6 relative z-10 max-w-7xl">
@@ -151,16 +143,24 @@ const WaitlistHero: React.FC<WaitlistHeroProps> = ({
             className="w-full max-w-lg mx-auto lg:mx-0"
           >
             <div className="relative">
-              {/* Glowing background */}
-              <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/20 via-blue-500/10 to-purple-500/20 rounded-3xl blur-2xl" />
+            <div className="relative">
               
-              {/* Form container */}
-              <div className="relative bg-gradient-to-br from-white/10 to-white/5 border border-white/10 rounded-3xl p-8 md:p-10 backdrop-blur-2xl shadow-2xl">
-                {/* Corner accents */}
-                <div className="absolute top-4 left-4 w-6 h-6 border-l-2 border-t-2 border-cyan-400/50 rounded-tl-xl" />
-                <div className="absolute top-4 right-4 w-6 h-6 border-r-2 border-t-2 border-cyan-400/50 rounded-tr-xl" />
-                <div className="absolute bottom-4 left-4 w-6 h-6 border-l-2 border-b-2 border-cyan-400/50 rounded-bl-xl" />
-                <div className="absolute bottom-4 right-4 w-6 h-6 border-r-2 border-b-2 border-cyan-400/50 rounded-br-xl" />
+              {/* Form container - Ultra Glass & Shiny */}
+              <div className="relative bg-white/[0.01] border border-white/10 rounded-3xl p-8 md:p-10 backdrop-blur-xl shadow-[0_0_60px_rgba(0,0,0,0.3)] overflow-hidden group">
+                
+                {/* Static Shine (Top-Left Light Source) */}
+                <div className="absolute inset-0 bg-gradient-to-br from-white/[0.08] via-transparent to-transparent pointer-events-none" />
+                
+                {/* Animated Shimmer - "Beating" shine like the button but subtle and large */}
+                <motion.div 
+                  className="absolute inset-0 bg-gradient-to-r from-transparent via-white/[0.07] to-transparent -skew-x-12"
+                  animate={{ translateX: ['-200%', '200%'] }}
+                  transition={{ duration: 8, repeat: Infinity, ease: "linear", repeatDelay: 2 }}
+                />
+
+                {/* Border Highlight (Top & Left) */}
+                <div className="absolute inset-0 rounded-3xl border border-white/10 pointer-events-none opacity-50" />
+                <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-white/40 to-transparent opacity-70" />
 
                 <div className="relative z-10">
                   <h3 className="text-3xl font-bold text-white mb-2">Get Early Access</h3>
@@ -197,6 +197,7 @@ const WaitlistHero: React.FC<WaitlistHeroProps> = ({
                   </AnimatePresence>
                 </div>
               </div>
+            </div>
             </div>
           </motion.div>
 

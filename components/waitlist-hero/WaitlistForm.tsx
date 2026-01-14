@@ -118,11 +118,11 @@ const WaitlistForm: React.FC<WaitlistFormProps> = ({
               onFocus={() => setFocusedField('email')}
               onBlur={() => handleBlur('email')}
               onKeyPress={handleKeyPress}
-              className={`w-full px-5 py-4 bg-white/5 border-2 rounded-2xl text-white placeholder-slate-500 focus:outline-none transition-all duration-300 ${
+              className={`w-full px-5 py-4 bg-white/3 border rounded-2xl text-white placeholder-slate-500 focus:outline-none transition-all duration-300 ${
                 errors.email && touched.email
                   ? 'border-red-500/50 focus:border-red-500 bg-red-500/5'
                   : focusedField === 'email'
-                  ? 'border-cyan-500/50 bg-cyan-500/5 shadow-[0_0_20px_rgba(34,211,238,0.1)]'
+                  ? 'border-cyan-500/30 bg-cyan-500/2 shadow-[0_0_15px_rgba(34,211,238,0.05)]'
                   : 'border-white/10 hover:border-white/20'
               }`}
               placeholder="you@example.com"
@@ -131,17 +131,17 @@ const WaitlistForm: React.FC<WaitlistFormProps> = ({
             />
           </motion.div>
 
-          {/* Enhanced focus glow */}
+          {/* Enhanced focus glow - Reduced opacity */}
           <motion.div 
             className="absolute inset-0 rounded-2xl -z-10 blur-xl"
             animate={{
-              opacity: focusedField === 'email' ? 0.3 : 0,
-              scale: focusedField === 'email' ? 1.1 : 1,
+              opacity: focusedField === 'email' ? 0.15 : 0,
+              scale: focusedField === 'email' ? 1.05 : 1,
             }}
             style={{
               background: errors.email && touched.email 
-                ? 'rgba(239, 68, 68, 0.3)' 
-                : 'rgba(34, 211, 238, 0.3)'
+                ? 'rgba(239, 68, 68, 0.15)' 
+                : 'rgba(34, 211, 238, 0.15)'
             }}
           />
 
@@ -202,11 +202,11 @@ const WaitlistForm: React.FC<WaitlistFormProps> = ({
               onFocus={() => setFocusedField('name')}
               onBlur={() => handleBlur('name')}
               onKeyPress={handleKeyPress}
-              className={`w-full px-5 py-4 bg-white/5 border-2 rounded-2xl text-white placeholder-slate-500 focus:outline-none transition-all duration-300 ${
+              className={`w-full px-5 py-4 bg-white/3 border rounded-2xl text-white placeholder-slate-500 focus:outline-none transition-all duration-300 ${
                 errors.name && touched.name
                   ? 'border-red-500/50 focus:border-red-500 bg-red-500/5'
                   : focusedField === 'name'
-                  ? 'border-cyan-500/50 bg-cyan-500/5 shadow-[0_0_20px_rgba(34,211,238,0.1)]'
+                  ? 'border-cyan-500/30 bg-cyan-500/2 shadow-[0_0_15px_rgba(34,211,238,0.05)]'
                   : 'border-white/10 hover:border-white/20'
               }`}
               placeholder="John Doe"
@@ -215,17 +215,17 @@ const WaitlistForm: React.FC<WaitlistFormProps> = ({
             />
           </motion.div>
 
-          {/* Enhanced focus glow */}
+          {/* Enhanced focus glow - Reduced opacity */}
           <motion.div 
             className="absolute inset-0 rounded-2xl -z-10 blur-xl"
             animate={{
-              opacity: focusedField === 'name' ? 0.3 : 0,
-              scale: focusedField === 'name' ? 1.1 : 1,
+              opacity: focusedField === 'name' ? 0.15 : 0,
+              scale: focusedField === 'name' ? 1.05 : 1,
             }}
             style={{
               background: errors.name && touched.name 
-                ? 'rgba(239, 68, 68, 0.3)' 
-                : 'rgba(34, 211, 238, 0.3)'
+                ? 'rgba(239, 68, 68, 0.15)' 
+                : 'rgba(34, 211, 238, 0.15)'
             }}
           />
 
@@ -268,18 +268,18 @@ const WaitlistForm: React.FC<WaitlistFormProps> = ({
         onClick={handleSubmit}
         disabled={isSubmitting || !isFormValid}
         className="relative w-full mt-8 group"
-        whileHover={{ scale: isFormValid && !isSubmitting ? 1.02 : 1 }}
-        whileTap={{ scale: isFormValid && !isSubmitting ? 0.98 : 1 }}
+        whileHover={{ scale: isFormValid && !isSubmitting ? 1.01 : 1 }}
+        whileTap={{ scale: isFormValid && !isSubmitting ? 0.99 : 1 }}
       >
         <div className={`relative px-6 py-4 rounded-2xl font-bold text-lg transition-all duration-300 overflow-hidden ${
           isSubmitting || !isFormValid
             ? 'bg-slate-800 text-slate-500 cursor-not-allowed'
-            : 'bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-[0_0_30px_rgba(34,211,238,0.4)] hover:shadow-[0_0_40px_rgba(34,211,238,0.6)]'
+            : 'bg-linear-to-r from-cyan-600 to-blue-700 text-white shadow-[0_0_20px_rgba(34,211,238,0.2)] hover:shadow-[0_0_30px_rgba(34,211,238,0.3)]'
         }`}>
-          {/* Animated shimmer */}
+          {/* Animated shimmer with reduced opacity */}
           {isFormValid && !isSubmitting && (
             <motion.div
-              className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent"
+              className="absolute inset-0 bg-linear-to-r from-transparent via-white/10 to-transparent"
               animate={{ x: ['-200%', '200%'] }}
               transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
             />
@@ -290,7 +290,7 @@ const WaitlistForm: React.FC<WaitlistFormProps> = ({
             {isSubmitting ? (
               <>
                 <motion.div
-                  className="w-5 h-5 border-2 border-slate-600 border-t-slate-400 rounded-full"
+                  className="w-5 h-5 border-2 border-slate-400 border-t-white rounded-full"
                   animate={{ rotate: 360 }}
                   transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
                 />
@@ -314,9 +314,9 @@ const WaitlistForm: React.FC<WaitlistFormProps> = ({
           </div>
         </div>
 
-        {/* Glow effect */}
+        {/* Glow effect - Reduced opacity */}
         {isFormValid && !isSubmitting && (
-          <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-cyan-500 to-blue-600 blur-xl opacity-50 group-hover:opacity-70 transition-opacity -z-10" />
+          <div className="absolute inset-0 rounded-2xl bg-linear-to-r from-cyan-600 to-blue-700 blur-xl opacity-20 group-hover:opacity-40 transition-opacity -z-10" />
         )}
       </motion.button>
 

@@ -1,140 +1,90 @@
 "use client";
 
-import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
+import { motion } from "framer-motion";
+import {
+  FiLink,
+  FiCpu,
+  FiLayers,
+} from "react-icons/fi";
+import { Rocket } from "lucide-react";
 
 const steps = [
   {
     step: "01",
-    title: "Connect Your World",
-    description: "Link your existing accounts—LinkedIn, GitHub, Dribbble, Medium. Blox securely imports your history.",
-    tags: ["OAuth 2.0", "Secure", "Instant"],
-    color: "from-blue-500 to-indigo-500"
+    title: "Connect",
+    description: "Link accounts securely.",
+    icon: FiLink,
   },
   {
     step: "02",
-    title: "AI Synthesis",
-    description: "Our engine analyzes your data, identifying key skills, achievements, and career milestones automatically.",
-    tags: ["LLM Analysis", "Skill Graph", "Semantic Search"],
-    color: "from-cyan-400 to-teal-400"
+    title: "Analyze",
+    description: "AI extracts key data.",
+    icon: FiCpu,
   },
   {
     step: "03",
-    title: "Design Generation",
-    description: "Blox generates stunning, professional portfolios and résumés tailored to your specific industry standards.",
-    tags: ["React", "Tailwind", "Framer Motion"],
-    color: "from-purple-500 to-pink-500"
+    title: "Generate",
+    description: "Create pro designs.",
+    icon: FiLayers,
   },
   {
     step: "04",
-    title: "Launch & Grow",
-    description: "Publish instantly. Receive analytics on who's viewing your profile and get AI suggestions for improvement.",
-    tags: ["Analytics", "SEO", "Optimization"],
-    color: "from-orange-400 to-red-500"
+    title: "Launch",
+    description: "Publish & track growth.",
+    icon: Rocket,
   }
 ];
 
 export default function HowItWorksSection() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start end", "end start"]
-  });
-
   return (
-    <section ref={containerRef} className="py-32 bg-[#020617] relative overflow-hidden">
-      {/* Background Ambience */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 w-[800px] h-[800px] bg-brand-cyan/5 rounded-full blur-[150px]" />
-        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03]" />
-      </div>
-
-      <div className="container mx-auto px-6 relative z-10">
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-32"
-        >
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            className="inline-block px-4 py-2 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-sm font-semibold mb-6"
-          >
-            Workflow
-          </motion.div>
-          <h2 className="text-4xl md:text-6xl font-bold mb-6 tracking-tight">
-            How <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">Blox</span> Works
+    <section className="py-24 bg-[#0a0f1f]">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-16">
+          <h2 className="text-3xl md:text-4xl font-bold mb-4 tracking-tight text-white">
+            How It Works
           </h2>
-          <p className="text-slate-400 text-lg md:text-xl max-w-2xl mx-auto">
-            From scattered data to a unified professional identity in minutes.
+          <p className="text-slate-400 text-lg">
+            Simple, fast, and powerful.
           </p>
-        </motion.div>
+        </div>
 
-        <div className="relative max-w-5xl mx-auto">
-          {/* Animated Center Line */}
-          <div className="absolute left-1/2 top-0 bottom-0 w-px bg-white/5 transform -translate-x-1/2 hidden md:block">
-            <motion.div 
-              className="absolute top-0 left-0 w-full bg-brand-cyan shadow-[0_0_15px_rgba(34,211,238,0.5)]"
-              style={{ height: useTransform(scrollYProgress, [0.1, 0.8], ["0%", "100%"]) }}
-            />
-          </div>
-
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {steps.map((item, index) => (
-            <TimelineItem key={index} item={item} index={index} />
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+              className="relative group p-6 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-xl overflow-hidden hover:bg-white/10 hover:shadow-[0_0_30px_rgba(34,211,238,0.1)] transition-all duration-500"
+            >
+              {/* Top Border Color Effect */}
+              <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-cyan-400 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              
+              {/* Shiny Gradient Overlay */}
+              <div className="absolute inset-0 bg-linear-to-b from-white/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+
+              {/* Glossy Reflection */}
+              <div className="absolute -inset-full top-0 block h-full w-1/2 -skew-x-12 bg-linear-to-r from-transparent to-white opacity-20 left-[-100%] group-hover:animate-shine" />
+
+              <div className="relative z-10">
+                <div className="mb-4 inline-flex items-center justify-center w-12 h-12 rounded-xl bg-white/10 text-white group-hover:scale-110 group-hover:bg-cyan-500/20 group-hover:text-cyan-300 transition-all duration-300 shadow-lg shadow-black/20 backdrop-blur-md border border-white/10">
+                  <item.icon className="w-6 h-6" />
+                </div>
+                
+                <div className="flex items-baseline gap-2 mb-2">
+                  <span className="text-xs font-mono text-slate-500 group-hover:text-cyan-400 transition-colors duration-300">{item.step}</span>
+                  <h3 className="text-lg font-semibold text-white group-hover:text-cyan-100 transition-colors">{item.title}</h3>
+                </div>
+                
+                <p className="text-sm text-slate-400 leading-relaxed group-hover:text-slate-300 transition-colors">
+                  {item.description}
+                </p>
+              </div>
+            </motion.div>
           ))}
         </div>
       </div>
     </section>
-  );
-}
-
-function TimelineItem({ item, index }: { item: any, index: number }) {
-  const isEven = index % 2 === 0;
-
-  return (
-    <motion.div 
-      initial={{ opacity: 0, y: 50 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-100px" }}
-      transition={{ duration: 0.8, delay: index * 0.2 }}
-      className={`flex flex-col md:flex-row items-center justify-between mb-24 relative ${
-        isEven ? "md:flex-row-reverse" : ""
-      }`}
-    >
-      {/* Content Card */}
-      <div className={`w-full md:w-5/12 ${isEven ? "md:text-left" : "md:text-right"}`}>
-        <div className="group relative bg-white/5 border border-white/10 p-8 rounded-3xl hover:bg-white/10 hover:border-white/20 transition-all duration-300 backdrop-blur-sm overflow-hidden">
-          <div className={`absolute top-0 left-0 w-1 h-full bg-gradient-to-b ${item.color} opacity-0 group-hover:opacity-100 transition-opacity duration-300`} />
-          
-          <span className={`text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-b ${item.color} opacity-20 mb-4 block`}>
-            {item.step}
-          </span>
-          
-          <h3 className="text-2xl font-bold text-white mb-4">{item.title}</h3>
-          <p className="text-slate-400 leading-relaxed mb-6">
-            {item.description}
-          </p>
-
-          <div className={`flex flex-wrap gap-2 ${isEven ? "justify-start" : "justify-end"}`}>
-            {item.tags.map((tag: string) => (
-              <span key={tag} className="px-3 py-1 text-xs font-medium rounded-full bg-white/10 text-slate-300 border border-white/5">
-                {tag}
-              </span>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* Center Node */}
-      <div className="relative z-10 w-12 h-12 rounded-full bg-[#020617] border-2 border-white/10 flex items-center justify-center my-6 md:my-0 shadow-[0_0_20px_rgba(0,0,0,0.5)] group">
-        <div className={`absolute inset-0 rounded-full bg-gradient-to-r ${item.color} opacity-20 blur-lg group-hover:opacity-60 transition-opacity duration-500`} />
-        <div className={`w-3 h-3 rounded-full bg-gradient-to-r ${item.color} shadow-[0_0_10px_currentColor]`} />
-      </div>
-
-      {/* Empty Side */}
-      <div className="w-full md:w-5/12 hidden md:block" />
-    </motion.div>
   );
 }
