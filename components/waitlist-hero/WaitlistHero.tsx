@@ -64,6 +64,17 @@ const WaitlistHero: React.FC<WaitlistHeroProps> = ({
         />
       </div>
 
+      {/* Centered Form Overlay */}
+      <div className="absolute inset-0 z-20 flex items-center justify-center px-6">
+        <div className="w-full max-w-md mx-auto">
+          <MemoizedWaitlistForm
+            onStateChange={handleStateChange}
+            onSubmit={handleFormSubmit}
+            className="w-full"
+          />
+        </div>
+      </div>
+
       {/* Main content */}
       <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-6 py-12">
         <div className="w-full max-w-md mx-auto">
@@ -85,15 +96,6 @@ const WaitlistHero: React.FC<WaitlistHeroProps> = ({
                 Building the future, one block at a time
               </p>
             </div>
-          </div>
-
-          {/* Form Section */}
-          <div className="w-full">
-            <MemoizedWaitlistForm
-              onStateChange={handleStateChange}
-              onSubmit={handleFormSubmit}
-              className="w-full"
-            />
           </div>
 
           {/* Success Message */}
@@ -186,21 +188,15 @@ const WaitlistHero: React.FC<WaitlistHeroProps> = ({
                   Building the future, one block at a time. 
                   Join our waitlist to be the first to experience the next generation of tools.
                 </p>
-              </div>
             </div>
+          </div>
 
-            {/* Form Side */}
-            <div className="desktop-form">
-              <div className="bg-gray-900/30 backdrop-blur-sm border border-gray-800 rounded-2xl p-8">
-                <h2 className="text-2xl font-semibold text-white mb-6">
-                  Join the Waitlist
-                </h2>
-                
-                <MemoizedWaitlistForm
-                  onStateChange={handleStateChange}
-                  onSubmit={handleFormSubmit}
-                  className="w-full"
-                />
+          {/* Form Side */}
+          <div className="desktop-form">
+            <div className="bg-gray-900/30 backdrop-blur-sm border border-gray-800 rounded-2xl p-8">
+              <h2 className="text-2xl font-semibold text-white mb-6">
+                Join the Waitlist
+              </h2>
 
                 {/* Success Message for Desktop */}
                 {currentState === 'completed' && (
