@@ -7,17 +7,40 @@ import { useState } from "react";
 export default function Footer() {
   const [email, setEmail] = useState("");
   const [isSubscribing, setIsSubscribing] = useState(false);
+  const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
 
   const handleNewsletterSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubscribing(true);
-    // Add newsletter subscription logic here
-    setTimeout(() => {
-      setIsSubscribing(false);
+    setMessage(null);
+
+    try {
+      const response = await fetch('/api/newsletter', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email }),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || 'Failed to subscribe');
+      }
+
       setEmail("");
-      alert("Thanks for subscribing!");
-    }, 1000);
+      setMessage({ type: 'success', text: 'Thanks for subscribing!' });
+    } catch (error) {
+      setMessage({ 
+        type: 'error', 
+        text: error instanceof Error ? error.message : 'Failed to subscribe. Please try again.' 
+      });
+    } finally {
+      setIsSubscribing(false);
+    }
   };
+
 
   return (
     <footer className="relative py-16 bg-[#020617] border-t border-white/5 overflow-hidden">
@@ -93,6 +116,11 @@ export default function Footer() {
               >
                 {isSubscribing ? 'Subscribing...' : 'Subscribe'}
               </motion.button>
+              {message && (
+                <p className={`text-sm ${message.type === 'success' ? 'text-green-400' : 'text-red-400'}`}>
+                  {message.text}
+                </p>
+              )}
             </form>
           </div>
         </div>

@@ -33,15 +33,15 @@ const WaitlistHero: React.FC<WaitlistHeroProps> = ({
   };
 
   return (
-    <div className={`relative w-full overflow-hidden flex flex-col items-center justify-center py-24 md:py-32 px-6 md:px-12 ${className}`}>
+    <div className={`relative w-full overflow-hidden flex flex-col items-center justify-center py-24 md:py-32 px-4 sm:px-6 md:px-12 ${className}`}>
       {/* Enhanced Background */}
       {/* Background - Clean */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         {/* Subtle dark gradient for depth if needed, or just clean */}
       </div>
 
-      <div className="container mx-auto px-6 relative z-10 max-w-7xl">
-        <div className="grid lg:grid-cols-2 gap-16 lg:gap-20 items-center">
+      <div className="container mx-auto px-4 sm:px-6 relative z-10 max-w-7xl">
+        <div className="grid lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-20 items-center">
           
           {/* Left Side: Content */}
           <motion.div 
@@ -75,7 +75,7 @@ const WaitlistHero: React.FC<WaitlistHeroProps> = ({
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.3 }}
-                className="text-5xl md:text-7xl font-black text-white tracking-tight leading-[1.1]"
+                className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white tracking-tight leading-[1.1]"
               >
                 Join the{' '}
                 <span className="relative inline-block">
@@ -146,7 +146,7 @@ const WaitlistHero: React.FC<WaitlistHeroProps> = ({
             <div className="relative">
               
               {/* Form container - Ultra Glass & Shiny */}
-              <div className="relative bg-white/[0.01] border border-white/10 rounded-3xl p-8 md:p-10 backdrop-blur-xl shadow-[0_0_60px_rgba(0,0,0,0.3)] overflow-hidden group">
+              <div className="relative bg-white/[0.01] border border-white/10 rounded-3xl p-6 sm:p-8 md:p-10 backdrop-blur-xl shadow-[0_0_60px_rgba(0,0,0,0.3)] overflow-hidden group">
                 
                 {/* Static Shine (Top-Left Light Source) */}
                 <div className="absolute inset-0 bg-gradient-to-br from-white/[0.08] via-transparent to-transparent pointer-events-none" />

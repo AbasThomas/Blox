@@ -10,6 +10,9 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "Join the Blox Waitlist | AI-Powered Professional Branding",
   description: "Unlock your professional edge with Blox. AI-powered portfolios, résumés, and branding in seconds.",
+  icons: {
+    icon: '/favicon.png',
+  },
 };
 
 export default function RootLayout({

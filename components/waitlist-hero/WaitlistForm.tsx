@@ -2,7 +2,10 @@
 
 import React, { useState, useCallback, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { WaitlistFormProps, FormData, FormErrors, FormState } from './types';
+import { WaitlistFormProps, FormData, FormErrors as BaseFormErrors, FormState } from './types';
+
+// Extend FormErrors to include submit
+type FormErrors = BaseFormErrors & { submit?: string };
 
 // Enhanced Form Component
 const WaitlistForm: React.FC<WaitlistFormProps> = ({
@@ -77,6 +80,10 @@ const WaitlistForm: React.FC<WaitlistFormProps> = ({
       await onSubmit(formData);
     } catch (error) {
       console.error('Submission error:', error);
+      setErrors(prev => ({ 
+        ...prev, 
+        submit: error instanceof Error ? error.message : 'Failed to join waitlist' 
+      }));
     } finally {
       setIsSubmitting(false);
     }
@@ -94,7 +101,7 @@ const WaitlistForm: React.FC<WaitlistFormProps> = ({
   const isFormValid = !validateEmail(formData.email) && !validateName(formData.name);
 
   return (
-    <div className={`space-y-5 ${className}`}>
+    <div className={`space-y-4 sm:space-y-5 ${className}`}>
       {/* Email Field */}
       <div className="space-y-2">
         <label 
@@ -118,7 +125,7 @@ const WaitlistForm: React.FC<WaitlistFormProps> = ({
               onFocus={() => setFocusedField('email')}
               onBlur={() => handleBlur('email')}
               onKeyPress={handleKeyPress}
-              className={`w-full px-5 py-4 bg-white/3 border rounded-2xl text-white placeholder-slate-500 focus:outline-none transition-all duration-300 ${
+              className={`w-full px-4 sm:px-5 py-3.5 sm:py-4 bg-white/3 border rounded-2xl text-white placeholder-slate-500 focus:outline-none transition-all duration-300 ${
                 errors.email && touched.email
                   ? 'border-red-500/50 focus:border-red-500 bg-red-500/5'
                   : focusedField === 'email'
@@ -202,7 +209,7 @@ const WaitlistForm: React.FC<WaitlistFormProps> = ({
               onFocus={() => setFocusedField('name')}
               onBlur={() => handleBlur('name')}
               onKeyPress={handleKeyPress}
-              className={`w-full px-5 py-4 bg-white/3 border rounded-2xl text-white placeholder-slate-500 focus:outline-none transition-all duration-300 ${
+              className={`w-full px-4 sm:px-5 py-3.5 sm:py-4 bg-white/3 border rounded-2xl text-white placeholder-slate-500 focus:outline-none transition-all duration-300 ${
                 errors.name && touched.name
                   ? 'border-red-500/50 focus:border-red-500 bg-red-500/5'
                   : focusedField === 'name'
@@ -271,7 +278,7 @@ const WaitlistForm: React.FC<WaitlistFormProps> = ({
         whileHover={{ scale: isFormValid && !isSubmitting ? 1.01 : 1 }}
         whileTap={{ scale: isFormValid && !isSubmitting ? 0.99 : 1 }}
       >
-        <div className={`relative px-6 py-4 rounded-2xl font-bold text-lg transition-all duration-300 overflow-hidden ${
+        <div className={`relative px-5 sm:px-6 py-3.5 sm:py-4 rounded-2xl font-bold text-lg transition-all duration-300 overflow-hidden ${
           isSubmitting || !isFormValid
             ? 'bg-slate-800 text-slate-500 cursor-not-allowed'
             : 'bg-gradient-to-r from-cyan-600 to-blue-700 text-white shadow-[0_0_20px_rgba(34,211,238,0.2)] hover:shadow-[0_0_30px_rgba(34,211,238,0.3)]'
@@ -319,6 +326,20 @@ const WaitlistForm: React.FC<WaitlistFormProps> = ({
           <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-cyan-600 to-blue-700 blur-xl opacity-20 group-hover:opacity-40 transition-opacity -z-10" />
         )}
       </motion.button>
+
+      {/* Submit Error */}
+      <AnimatePresence>
+        {errors.submit && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            className="mt-4 p-3 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-sm text-center"
+          >
+            {errors.submit}
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Privacy note */}
       <p className="text-xs text-slate-500 text-center mt-4 leading-relaxed">
