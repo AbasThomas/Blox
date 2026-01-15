@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import { 
   Github, 
   Linkedin, 
@@ -28,6 +28,19 @@ export default function VisualFeatures() {
   const y = useTransform(scrollYProgress, [0, 1], [80, -80]);
   const rotate = useTransform(scrollYProgress, [0, 1], [0, 360]);
   const scale = useTransform(scrollYProgress, [0, 0.5, 1], [1, 1.05, 1]);
+
+  const [orbitRadius, setOrbitRadius] = useState(200);
+
+  useEffect(() => {
+    setOrbitRadius(window.innerWidth < 640 ? 80 : 200);
+    
+    const handleResize = () => {
+      setOrbitRadius(window.innerWidth < 640 ? 80 : 200);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   return (
     <section ref={containerRef} className="relative py-32 bg-linear-to-b from-[#020617] via-[#0B1120] to-[#020617] overflow-hidden text-white">
@@ -66,14 +79,14 @@ export default function VisualFeatures() {
                 opacity: [0, 1, 0],
               }}
               transition={{
-                duration: 3 + Math.random() * 2,
+                duration: 3 + (i % 5) * 0.5,
                 delay: i * 0.2,
                 repeat: Infinity,
                 ease: "linear",
               }}
               style={{
                 left: `${(i * 5) % 100}%`,
-                top: `${Math.random() * 100}%`,
+                top: `${(i * 7 + 23) % 100}%`,
               }}
             />
           ))}
@@ -157,7 +170,7 @@ export default function VisualFeatures() {
 
             {/* Orbital particles */}
             {[0, 1, 2, 3].map((i) => {
-              const orbitRadius = typeof window !== 'undefined' && window.innerWidth < 640 ? 80 : 200;
+              // orbitRadius is now state-based to prevent hydration mismatch
               return (
                 <motion.div
                   key={`particle-${i}`}

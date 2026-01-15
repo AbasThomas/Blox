@@ -10,10 +10,13 @@
 @layer base {
   html {
     scroll-behavior: smooth;
+    background-color: #0B0E11; /* Hardcoded brand-navy */
+    height: 100%;
   }
   body {
-    background-color: var(--color-brand-navy);
+    background-color: #0B0E11; /* Hardcoded brand-navy */
     color: white;
+    min-height: 100vh;
   }
 }
 
