@@ -15,7 +15,7 @@ export default function HeroSection() {
   }, []);
 
   return (
-    <section className="relative min-h-screen overflow-hidden bg-[#020617] text-slate-50 flex flex-col justify-center items-center">
+    <section className="relative min-h-screen overflow-x-hidden bg-[#020617] text-slate-50 flex flex-col justify-center items-center">
       <nav className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 ${isScrolled ? "py-4" : "py-6"}`}>
         <div className="mx-auto max-w-7xl px-6">
           <div className={`relative flex items-center justify-between transition-all duration-500 ${
@@ -26,10 +26,10 @@ export default function HeroSection() {
             {/* Logo - 2x2 Grid */}
             <div className="flex items-center gap-3 group cursor-pointer">
               <div className="grid grid-cols-2 gap-1 transition-transform duration-500 group-hover:rotate-180">
-                <div className="w-2.5 h-2.5 bg-brand-cyan rounded-[2px] shadow-[0_0_8px_rgba(34,211,238,0.6)]" />
-                <div className="w-2.5 h-2.5 border border-brand-cyan/80 rounded-[2px]" />
-                <div className="w-2.5 h-2.5 border border-brand-cyan/80 rounded-[2px]" />
-                <div className="w-2.5 h-2.5 border border-brand-cyan/80 rounded-[2px]" />
+                <div className="w-4 h-4 bg-[#1ECEFA] rounded-[2px] shadow-[0_0_8px_rgba(34,211,238,0.6)]" />
+                <div className="w-4 h-4 rounded-[2px] bg-[#14171D] shadow-[0_0_6px_rgba(30,206,250,0.4),inset_0_0_6px_rgba(30,206,250,0.2)]" />
+                <div className="w-4 h-4 rounded-[2px] bg-[#14171D] shadow-[0_0_6px_rgba(30,206,250,0.4),inset_0_0_6px_rgba(30,206,250,0.2)]" />
+                <div className="w-4 h-4 rounded-[2px] bg-[#14171D] shadow-[0_0_6px_rgba(30,206,250,0.4),inset_0_0_6px_rgba(30,206,250,0.2)]" />
               </div>
               <span className="text-white font-bold tracking-tight text-lg">blox</span>
             </div>
@@ -71,7 +71,7 @@ export default function HeroSection() {
       </nav>
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
       <div 
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full full opacity-40"
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full opacity-40"
         style={{
           background: "radial-gradient(circle at center, rgba(49,197,244,0.25) 0%, rgba(49,197,244,0.12) 25%, rgba(49,197,244,0.06) 45%, transparent 70%)"
         }}
@@ -186,9 +186,9 @@ function HeroContent() {
         transition={{ duration: 0.8 }}
         className="relative"
       >
-        <div className="absolute -inset-4 bg-linear-to-r from-cyan-500/10 to-blue-500/10 blur-3xl opacity-50 rounded-full" />
+        <div className="absolute -inset-4 bg-gradient-to-r from-cyan-500/10 to-blue-500/10 blur-3xl opacity-50 rounded-full" />
         
-        <h1 className="text-5xl sm:text-6xl md:text-4xl lg:text-[85px] xl:text-[80px] font-bold font-inter tracking-tighter leading-[1.05] mb-6">
+        <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-[85px] xl:text-[96px] font-bold font-inter tracking-tighter leading-[1.05] mb-6">
           <span className="block text-white mb-2">
             Your{" "}
             <span className="inline-block min-w-[3ch] text-left">
@@ -198,14 +198,14 @@ function HeroContent() {
                 animate={{ y: 0, opacity: 1 }}
                 exit={{ y: -20, opacity: 0 }}
                 transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                className="bg-clip-text text-transparent bg-linear-to-r from-cyan-300 to-blue-400 inline-block"
+                className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-300 to-blue-400 inline-block"
               >
                 {words[index]}
               </motion.span>
             </span>
             ,
           </span>
-          <span className="bg-clip-text text-transparent bg-linear-to-b from-cyan-300 via-blue-500 to-indigo-600 inline-block relative">
+          <span className="bg-clip-text text-transparent bg-gradient-to-b from-cyan-300 via-blue-500 to-indigo-600 inline-block relative">
              assembled by AI
              <motion.span
                 className="absolute -top-4 -right-8"
@@ -275,10 +275,13 @@ function HeroContent() {
         </motion.button>
 
         {/* Secondary CTA */}
-        <motion.button
+        <motion.a
+          href="https://wa.me/1234567890"
+          target="_blank"
+          rel="noopener noreferrer"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          className="group relative rounded-full bg-white/5 border border-white/10 px-8 py-4 md:px-10 md:py-5 transition-all duration-300 overflow-hidden hover:bg-white/10 hover:border-white/30"
+          className="group relative rounded-full bg-white/5 border border-white/10 px-8 py-4 md:px-10 md:py-5 transition-all duration-300 overflow-hidden hover:bg-white/10 hover:border-white/30 cursor-pointer"
         >
           <span className="relative z-10 flex items-center gap-3 text-lg font-semibold text-slate-300 group-hover:text-white transition-colors tracking-wide">
             Join the Community
@@ -286,7 +289,7 @@ function HeroContent() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
             </svg>
           </span>
-        </motion.button>
+        </motion.a>
       </motion.div>
 
       {/* Enhanced Stats Cards */}

@@ -274,12 +274,12 @@ const WaitlistForm: React.FC<WaitlistFormProps> = ({
         <div className={`relative px-6 py-4 rounded-2xl font-bold text-lg transition-all duration-300 overflow-hidden ${
           isSubmitting || !isFormValid
             ? 'bg-slate-800 text-slate-500 cursor-not-allowed'
-            : 'bg-linear-to-r from-cyan-600 to-blue-700 text-white shadow-[0_0_20px_rgba(34,211,238,0.2)] hover:shadow-[0_0_30px_rgba(34,211,238,0.3)]'
+            : 'bg-gradient-to-r from-cyan-600 to-blue-700 text-white shadow-[0_0_20px_rgba(34,211,238,0.2)] hover:shadow-[0_0_30px_rgba(34,211,238,0.3)]'
         }`}>
           {/* Animated shimmer with reduced opacity */}
           {isFormValid && !isSubmitting && (
             <motion.div
-              className="absolute inset-0 bg-linear-to-r from-transparent via-white/10 to-transparent"
+              className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent"
               animate={{ x: ['-200%', '200%'] }}
               transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
             />
@@ -316,7 +316,7 @@ const WaitlistForm: React.FC<WaitlistFormProps> = ({
 
         {/* Glow effect - Reduced opacity */}
         {isFormValid && !isSubmitting && (
-          <div className="absolute inset-0 rounded-2xl bg-linear-to-r from-cyan-600 to-blue-700 blur-xl opacity-20 group-hover:opacity-40 transition-opacity -z-10" />
+          <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-cyan-600 to-blue-700 blur-xl opacity-20 group-hover:opacity-40 transition-opacity -z-10" />
         )}
       </motion.button>
 

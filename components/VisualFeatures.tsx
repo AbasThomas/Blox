@@ -106,11 +106,11 @@ export default function VisualFeatures() {
           >
             Built for{" "}
             <span className="relative inline-block">
-              <span className="text-transparent bg-clip-text bg-linear-to-r from-cyan-400 via-blue-500 to-purple-600 animate-gradient">
+              <span className="text-transparent bg-clip-text text-transparent bg-linear-to-b from-cyan-300 via-blue-500 to-indigo-600  animate-gradient">
                 Speed
               </span>
               <motion.div 
-                className="absolute -bottom-2 left-0 right-0 h-1 bg-linear-to-r from-cyan-400 via-blue-500 to-purple-600 rounded-full"
+                className="absolute -bottom-2 left-0 right-0 h-1 bg-linear-to-r from-cyan-300 via-blue-500 to-indigo-600 rounded-full"
                 initial={{ scaleX: 0 }}
                 whileInView={{ scaleX: 1 }}
                 transition={{ duration: 0.8, delay: 0.5 }}
@@ -137,7 +137,7 @@ export default function VisualFeatures() {
             whileInView={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1 }}
             viewport={{ once: true }}
-            className="relative w-full max-w-4xl h-[500px] md:h-[700px] flex items-center justify-center"
+            className="relative w-full max-w-4xl h-[400px] sm:h-[500px] md:h-[600px] lg:h-[700px] flex items-center justify-center px-4"
           >
             {/* Rotating Rings with enhanced effects */}
             {[1, 2, 3].map((i) => (
@@ -147,8 +147,8 @@ export default function VisualFeatures() {
                 style={{
                   rotate: i % 2 === 0 ? rotate : useTransform(scrollYProgress, [0, 1], [360, 0]),
                   scale: useTransform(scrollYProgress, [0, 0.5, 1], [0.9, 1.15, 0.9]),
-                  width: 180 * i + 40,
-                  height: 180 * i + 40,
+                  width: `min(${120 * i + 30}px, ${60 * i + 15}vw)`,
+                  height: `min(${120 * i + 30}px, ${60 * i + 15}vw)`,
                   borderColor: `rgba(34, 211, 238, ${0.15 - i * 0.03})`,
                   boxShadow: `0 0 ${20 + i * 10}px rgba(34, 211, 238, ${0.1 - i * 0.02})`
                 }}
@@ -156,42 +156,45 @@ export default function VisualFeatures() {
             ))}
 
             {/* Orbital particles */}
-            {[0, 1, 2, 3].map((i) => (
-              <motion.div
-                key={`particle-${i}`}
-                className="absolute w-3 h-3 rounded-full bg-linear-to-r from-cyan-400 to-blue-500"
-                style={{
-                  top: '50%',
-                  left: '50%',
-                  marginLeft: -6,
-                  marginTop: -6,
-                }}
-                animate={{
-                  rotate: 360,
-                  x: Math.cos((i * Math.PI) / 2) * 200,
-                  y: Math.sin((i * Math.PI) / 2) * 200,
-                }}
-                transition={{
-                  rotate: { duration: 8 + i * 2, repeat: Infinity, ease: "linear" },
-                  x: { duration: 8 + i * 2, repeat: Infinity, ease: "linear" },
-                  y: { duration: 8 + i * 2, repeat: Infinity, ease: "linear" },
-                }}
-              >
-                <div className="absolute inset-0 bg-cyan-400 rounded-full blur-md opacity-50" />
-              </motion.div>
-            ))}
+            {[0, 1, 2, 3].map((i) => {
+              const orbitRadius = typeof window !== 'undefined' && window.innerWidth < 640 ? 80 : 200;
+              return (
+                <motion.div
+                  key={`particle-${i}`}
+                  className="absolute w-2 h-2 sm:w-3 sm:h-3 rounded-full bg-linear-to-r from-cyan-400 to-blue-500"
+                  style={{
+                    top: '50%',
+                    left: '50%',
+                    marginLeft: -6,
+                    marginTop: -6,
+                  }}
+                  animate={{
+                    rotate: 360,
+                    x: Math.cos((i * Math.PI) / 2) * orbitRadius,
+                    y: Math.sin((i * Math.PI) / 2) * orbitRadius,
+                  }}
+                  transition={{
+                    rotate: { duration: 8 + i * 2, repeat: Infinity, ease: "linear" },
+                    x: { duration: 8 + i * 2, repeat: Infinity, ease: "linear" },
+                    y: { duration: 8 + i * 2, repeat: Infinity, ease: "linear" },
+                  }}
+                >
+                  <div className="absolute inset-0 bg-cyan-400 rounded-full blur-md opacity-50" />
+                </motion.div>
+              );
+            })}
 
             {/* Central Core - Enhanced */}
             <motion.div
               whileHover={{ scale: 1.05 }}
-              className="relative w-40 h-40 md:w-56 md:h-56 bg-linear-to-br from-[#0a0e1f] to-[#020617] rounded-3xl border-2 border-cyan-500/40 shadow-[0_0_80px_rgba(34,211,238,0.3)] flex items-center justify-center z-10 overflow-hidden group cursor-pointer"
+              className="relative w-28 h-28 sm:w-36 sm:h-36 md:w-48 md:h-48 lg:w-56 lg:h-56 bg-linear-to-br from-[#0a0e1f] to-[#020617] rounded-2xl sm:rounded-3xl border-2 border-cyan-500/40 shadow-[0_0_80px_rgba(34,211,238,0.3)] flex items-center justify-center z-10 overflow-hidden group cursor-pointer"
             >
               {/* Animated gradient background */}
               <div className="absolute inset-0 bg-linear-to-br from-cyan-500/20 via-blue-600/20 to-purple-500/20 opacity-60 group-hover:opacity-100 transition-opacity duration-700" />
              
               {/* Inner core with pulse */}
               <motion.div
-                className="relative w-20 h-20 md:w-28 md:h-28 bg-linear-to-tr from-cyan-400 via-blue-500 to-purple-600 rounded-2xl shadow-[0_0_40px_rgba(34,211,238,0.6)] flex items-center justify-center"
+                className="relative w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 lg:w-28 lg:h-28 bg-linear-to-tr from-cyan-400 via-blue-500 to-purple-600 rounded-xl sm:rounded-2xl shadow-[0_0_40px_rgba(34,211,238,0.6)] flex items-center justify-center"
                 animate={{
                   boxShadow: [
                     '0 0 40px rgba(34,211,238,0.6)',
@@ -201,7 +204,7 @@ export default function VisualFeatures() {
                 }}
                 transition={{ duration: 2, repeat: Infinity }}
               >
-                <User className="w-10 h-10 md:w-14 md:h-14 text-white/90" />
+                <User className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 lg:w-14 lg:h-14 text-white/90" />
               </motion.div>
              
               {/* Enhanced scanline */}
@@ -212,20 +215,30 @@ export default function VisualFeatures() {
               />
              
               {/* Corner accents */}
-              <div className="absolute top-3 left-3 w-4 h-4 border-l-2 border-t-2 border-cyan-400 rounded-tl-lg" />
-              <div className="absolute top-3 right-3 w-4 h-4 border-r-2 border-t-2 border-cyan-400 rounded-tr-lg" />
-              <div className="absolute bottom-3 left-3 w-4 h-4 border-l-2 border-b-2 border-cyan-400 rounded-bl-lg" />
-              <div className="absolute bottom-3 right-3 w-4 h-4 border-r-2 border-b-2 border-cyan-400 rounded-br-lg" />
+              <div className="absolute top-2 left-2 sm:top-3 sm:left-3 w-3 h-3 sm:w-4 sm:h-4 border-l-2 border-t-2 border-cyan-400 rounded-tl-lg" />
+              <div className="absolute top-2 right-2 sm:top-3 sm:right-3 w-3 h-3 sm:w-4 sm:h-4 border-r-2 border-t-2 border-cyan-400 rounded-tr-lg" />
+              <div className="absolute bottom-2 left-2 sm:bottom-3 sm:left-3 w-3 h-3 sm:w-4 sm:h-4 border-l-2 border-b-2 border-cyan-400 rounded-bl-lg" />
+              <div className="absolute bottom-2 right-2 sm:bottom-3 sm:right-3 w-3 h-3 sm:w-4 sm:h-4 border-r-2 border-b-2 border-cyan-400 rounded-br-lg" />
             </motion.div>
 
-            {/* Floating Icons - Enhanced & Distributed (7 items) */}
-            <FloatingIcon delay={0} x={0} y={-220} icon="github" />
-            <FloatingIcon delay={1} x={190} y={-100} icon="linkedin" />
-            <FloatingIcon delay={2} x={200} y={80} icon="dribbble" />
-            <FloatingIcon delay={1.5} x={80} y={200} icon="behance" />
-            <FloatingIcon delay={3} x={-80} y={200} icon="fiverr" />
-            <FloatingIcon delay={2.5} x={-200} y={80} icon="upwork" />
-            <FloatingIcon delay={0.5} x={-190} y={-100} icon="twitter" />
+            {/* Floating Icons - Enhanced & Distributed (7 items) - Hidden on small screens, visible on md+ */}
+            <div className="hidden md:block">
+              <FloatingIcon delay={0} x={0} y={-220} icon="github" />
+              <FloatingIcon delay={1} x={190} y={-100} icon="linkedin" />
+              <FloatingIcon delay={2} x={200} y={80} icon="dribbble" />
+              <FloatingIcon delay={1.5} x={80} y={200} icon="behance" />
+              <FloatingIcon delay={3} x={-80} y={200} icon="fiverr" />
+              <FloatingIcon delay={2.5} x={-200} y={80} icon="upwork" />
+              <FloatingIcon delay={0.5} x={-190} y={-100} icon="twitter" />
+            </div>
+            {/* Mobile version with closer icons */}
+            <div className="md:hidden">
+              <FloatingIcon delay={0} x={0} y={-120} icon="github" />
+              <FloatingIcon delay={1} x={105} y={-60} icon="linkedin" />
+              <FloatingIcon delay={2} x={105} y={60} icon="dribbble" />
+              <FloatingIcon delay={3} x={-105} y={60} icon="upwork" />
+              <FloatingIcon delay={0.5} x={-105} y={-60} icon="twitter" />
+            </div>
           </motion.div>
          
           <motion.p

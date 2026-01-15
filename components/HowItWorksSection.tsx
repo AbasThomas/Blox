@@ -62,10 +62,10 @@ export default function HowItWorksSection() {
               <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-cyan-400 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               
               {/* Shiny Gradient Overlay */}
-              <div className="absolute inset-0 bg-linear-to-b from-white/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+              <div className="absolute inset-0 bg-gradient-to-b from-white/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
 
               {/* Glossy Reflection */}
-              <div className="absolute -inset-full top-0 block h-full w-1/2 -skew-x-12 bg-linear-to-r from-transparent to-white opacity-20 left-[-100%] group-hover:animate-shine" />
+              <div className="absolute inset-y-0 top-0 block h-full w-1/2 -skew-x-12 bg-gradient-to-r from-transparent to-white opacity-20 left-[-100%] group-hover:animate-shine" />
 
               <div className="relative z-10">
                 <div className="mb-4 inline-flex items-center justify-center w-12 h-12 rounded-xl bg-white/10 text-white group-hover:scale-110 group-hover:bg-cyan-500/20 group-hover:text-cyan-300 transition-all duration-300 shadow-lg shadow-black/20 backdrop-blur-md border border-white/10">

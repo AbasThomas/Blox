@@ -87,8 +87,10 @@ const BloxLogo: React.FC<BloxLogoProps> = ({
     return {
       ...fallbackStyles.block,
       ...(isActive ? fallbackStyles.blockActive : fallbackStyles.blockDormant),
-      backgroundColor: isActive ? '#00d1ff' : '#1f2937',
-      borderColor: isActive ? '#00d1ff' : '#374151',
+      backgroundColor: isActive ? '#1ECEFA' : '#14171D',
+      boxShadow: isActive 
+        ? '0 0 8px rgba(34,211,238,0.6)' 
+        : '0 0 6px rgba(30,206,250,0.4), inset 0 0 6px rgba(30,206,250,0.2)',
     };
   };
 
@@ -194,11 +196,10 @@ const BloxLogo: React.FC<BloxLogoProps> = ({
                     variants={blockVariants}
                     animate={blockState}
                     style={{
-                        backgroundColor: isActive ? '#00d1ff' : '#1f2937',
-                        borderColor: isActive ? '#00d1ff' : '#374151',
-                        borderWidth: '1px',
-                        borderStyle: 'solid',
-                        boxShadow: isActive ? '0 0 20px rgba(0, 209, 255, 0.4)' : 'none', // Intensified glow
+                        backgroundColor: isActive ? '#1ECEFA' : '#14171D',
+                        boxShadow: isActive 
+                          ? '0 0 8px rgba(34,211,238,0.6)' 
+                          : '0 0 6px rgba(30,206,250,0.4), inset 0 0 6px rgba(30,206,250,0.2)',
                     }}
                     aria-label={`Block ${blockId}`}
                 >

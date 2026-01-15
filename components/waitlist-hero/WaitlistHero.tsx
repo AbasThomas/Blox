@@ -33,7 +33,7 @@ const WaitlistHero: React.FC<WaitlistHeroProps> = ({
   };
 
   return (
-    <div className={`relative w-full overflow-hidden flex flex-col items-center justify-center py-20 md:py-32 ${className}`}>
+    <div className={`relative w-full overflow-hidden flex flex-col items-center justify-center py-24 md:py-32 px-6 md:px-12 ${className}`}>
       {/* Enhanced Background */}
       {/* Background - Clean */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
@@ -79,11 +79,11 @@ const WaitlistHero: React.FC<WaitlistHeroProps> = ({
               >
                 Join the{' '}
                 <span className="relative inline-block">
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600">
+                  <span className="text-transparent bg-clip-text text-transparent bg-gradient-to-b from-cyan-300 via-blue-500 to-indigo-600 ">
                     Revolution
                   </span>
                   <motion.div 
-                    className="absolute -bottom-2 left-0 right-0 h-1.5 bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 rounded-full"
+                    className="absolute -bottom-2 left-0 right-0 h-1.5 bg-gradient-to-r from-cyan-300 via-blue-500 to-indigo-600"
                     initial={{ scaleX: 0 }}
                     animate={{ scaleX: 1 }}
                     transition={{ duration: 0.8, delay: 0.6 }}
