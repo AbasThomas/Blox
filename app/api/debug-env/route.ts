@@ -22,5 +22,6 @@ export async function GET() {
   console.log('----------------------');
   console.log("RESEND KEY:", process.env.RESEND_API_KEY ? "FOUND" : "MISSING");
 
+  
   return NextResponse.json(status);
 }
