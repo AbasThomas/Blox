@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     siteName: "Blox",
     images: [
       {
-        url: "/og-image.png", // We'll need to remember to ensure this image exists or is handled
+        url: "/linkimg.png", // We'll need to remember to ensure this image exists or is handled
         width: 1200,
         height: 630,
         alt: "Blox Professional Branding Preview",
@@ -37,7 +37,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Blox | AI-Powered Professional Branding",
     description: "Unlock your professional edge with Blox. AI-powered portfolios, résumés, and branding in seconds.",
-    images: ["/og-image.png"],
+    images: ["/linkimg.png"],
     creator: "@blox_app", // Placeholder
   },
   icons: {
