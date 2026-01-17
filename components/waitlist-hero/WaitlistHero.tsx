@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import Image from 'next/image';
 import BloxLogo from './BloxLogo';
 import WaitlistForm from './WaitlistForm';
 import { WaitlistHeroProps, FormData, FormState } from './types';
@@ -14,7 +15,7 @@ const WaitlistHero: React.FC<WaitlistHeroProps> = ({
 }) => {
   const [currentState, setCurrentState] = useState<FormState>('initial');
 
-  const [count, setCount] = useState<number>(2000); // Start with base count
+  const [count, setCount] = useState<number>(500); // Start with base count
   
   // Fetch real count
   React.useEffect(() => {
@@ -24,7 +25,7 @@ const WaitlistHero: React.FC<WaitlistHeroProps> = ({
         if (response.ok) {
           const data = await response.json();
           // Ensure we don't show less than the base "marketing" number if real count is low
-          setCount(Math.max(2000, data.count));
+          setCount(Math.max(500, data.count));
         }
       } catch (error) {
         console.error('Failed to fetch waitlist count:', error);
@@ -132,14 +133,26 @@ const WaitlistHero: React.FC<WaitlistHeroProps> = ({
               className="flex items-center gap-3 sm:gap-4"
             >
               <div className="flex -space-x-3">
-                {[1, 2, 3, 4].map((i) => (
+                {[
+                  '/profile1.jpeg',
+                  '/profile2.jpeg',
+                  '/profile3.jpeg',
+                  '/profile4.jpeg'
+                ].map((src, i) => (
                   <motion.div
                     key={i}
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
                     transition={{ duration: 0.3, delay: 0.7 + i * 0.1 }}
-                    className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gradient-to-br from-cyan-400 to-blue-600 border-2 border-[#020617] ring-2 ring-cyan-500/20"
-                  />
+                    className="w-8 h-8 sm:w-10 sm:h-10 rounded-full border-2 border-[#020617] ring-2 ring-cyan-500/20 overflow-hidden relative"
+                  >
+                    <Image
+                      src={src}
+                      alt={`Member ${i + 1}`}
+                      fill
+                      className="object-cover"
+                    />
+                  </motion.div>
                 ))}
                 <motion.div
                   initial={{ scale: 0 }}
@@ -147,7 +160,7 @@ const WaitlistHero: React.FC<WaitlistHeroProps> = ({
                   transition={{ duration: 0.3, delay: 1.1 }}
                   className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-slate-800 border-2 border-[#020617] ring-2 ring-slate-700/50 flex items-center justify-center text-[10px] sm:text-xs font-bold text-slate-400"
                 >
-                  +{Math.floor(count / 1000)}K
+                  {count >= 1000 ? `+${Math.floor(count / 1000)}K` : `+${count}`}
                 </motion.div>
               </div>
               <div className="text-xs sm:text-sm text-left">
