@@ -1,27 +1,32 @@
 import { NextResponse } from 'next/server';
 
-export async function GET() {
-  const envVars = {
-    NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL,
-    NEXT_PUBLIC_SUPABASE_ANON_KEY: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
-    RESEND_API_KEY: process.env.RESEND_API_KEY,
-    SUPABASE_SERVICE_ROLE_KEY: process.env.SUPABASE_SERVICE_ROLE_KEY,
-    NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
-  };
+export async function GET(request: Request) {
+  const { searchParams } = new URL(request.url);
+  const specificKey = searchParams.get('key');
 
-  const status = Object.entries(envVars).reduce((acc, [key, value]) => {
+  // If a specific key is requested
+  if (specificKey) {
+    const value = process.env[specificKey];
+    return NextResponse.json({
+      key: specificKey,
+      exists: !!value,
+      value: value ? `${value.substring(0, 3)}... (length: ${value.length})` : null,
+    });
+  }
+
+  // Otherwise list all (masked)
+  const envVars = Object.keys(process.env).sort().reduce((acc, key) => {
+    const value = process.env[key];
     acc[key] = {
       exists: !!value,
-      preview: value ? `${value.substring(0, 5)}...` : null,
+      preview: value ? `${value.substring(0, 3)}...` : null,
+      length: value ? value.length : 0,
     };
     return acc;
-  }, {} as Record<string, { exists: boolean; preview: string | null }>);
+  }, {} as Record<string, any>);
 
-  console.log('--- DEBUG ENV VARS ---');
-  console.log(JSON.stringify(status, null, 2));
-  console.log('----------------------');
-  console.log("RESEND KEY:", process.env.RESEND_API_KEY ? "FOUND" : "MISSING");
-
-  
-  return NextResponse.json(status);
+  return NextResponse.json({
+    count: Object.keys(envVars).length,
+    variables: envVars
+  });
 }
