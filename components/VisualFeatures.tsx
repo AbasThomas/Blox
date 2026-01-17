@@ -448,7 +448,7 @@ export default function VisualFeatures() {
               </div>
 
               {/* Badge */}
-              <div className="absolute top-6 right-6 px-3 py-1 rounded-full bg-linear-to-r from-green-500/10 to-emerald-500/10 border border-green-500/20 text-green-400 text-xs font-bold uppercase tracking-wider">
+              <div className="absolute top-2 right-4 md:top-6 md:right-6 px-3 py-1 rounded-full bg-linear-to-r from-green-500/10 to-emerald-500/10 border border-green-500/20 text-green-400 text-xs font-bold uppercase tracking-wider">
                 AI Powered
               </div>
             </div>
