@@ -14,6 +14,26 @@ const WaitlistHero: React.FC<WaitlistHeroProps> = ({
 }) => {
   const [currentState, setCurrentState] = useState<FormState>('initial');
 
+  const [count, setCount] = useState<number>(2000); // Start with base count
+  
+  // Fetch real count
+  React.useEffect(() => {
+    const fetchCount = async () => {
+      try {
+        const response = await fetch('/api/waitlist/count');
+        if (response.ok) {
+          const data = await response.json();
+          // Ensure we don't show less than the base "marketing" number if real count is low
+          setCount(Math.max(2000, data.count));
+        }
+      } catch (error) {
+        console.error('Failed to fetch waitlist count:', error);
+      }
+    };
+
+    fetchCount();
+  }, []);
+
   const handleStateChange = (state: FormState, data: Partial<FormData>) => {
     setCurrentState(state);
   };
@@ -25,6 +45,8 @@ const WaitlistHero: React.FC<WaitlistHeroProps> = ({
       }
       setTimeout(() => {
         setCurrentState('completed');
+        // Optimistically increment count
+        setCount(prev => prev + 1);
       }, 700);
     } catch (error) {
       console.error('Submission failed:', error);
@@ -125,11 +147,11 @@ const WaitlistHero: React.FC<WaitlistHeroProps> = ({
                   transition={{ duration: 0.3, delay: 1.1 }}
                   className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-slate-800 border-2 border-[#020617] ring-2 ring-slate-700/50 flex items-center justify-center text-[10px] sm:text-xs font-bold text-slate-400"
                 >
-                  +2K
+                  +{Math.floor(count / 1000)}K
                 </motion.div>
               </div>
               <div className="text-xs sm:text-sm text-left">
-                <p className="text-white font-semibold">2,000+ developers</p>
+                <p className="text-white font-semibold">{count.toLocaleString()}+ developers</p>
                 <p className="text-slate-500">already joined</p>
               </div>
             </motion.div>
