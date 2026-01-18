@@ -276,7 +276,7 @@ function HeroContent() {
 
         {/* Secondary CTA */}
         <motion.a
-          href="https://wa.me/1234567890"
+          href="https://chat.whatsapp.com/Fg9EqLFYJ0EF5EgpUsYRj2"
           target="_blank"
           rel="noopener noreferrer"
           whileHover={{ scale: 1.05 }}
