@@ -15,8 +15,8 @@ export default function HeroSection() {
   }, []);
 
   return (
-    <section className="relative isolate min-h-screen overflow-x-hidden bg-[#020617] text-slate-50 flex flex-col justify-center items-center">
-      <nav className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 ${isScrolled ? "py-4" : "py-6"}`}>
+    <section className="relative min-h-screen overflow-x-hidden bg-[#020617] text-slate-50 flex flex-col justify-center items-center">
+      <nav className={`fixed top-0 inset-x-0 z-[9999] transition-all duration-300 ${isScrolled ? "py-4" : "py-6"}`}>
         <div className="mx-auto max-w-7xl px-6">
           <div className={`relative flex items-center justify-between transition-all duration-500 ${
             isScrolled 
