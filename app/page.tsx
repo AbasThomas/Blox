@@ -11,7 +11,7 @@ import Footer from "@/components/Footer";
 
 export default function Home() {
   return (
-    <main className="flex flex-col min-h-screen bg-brand-navy text-white selection:bg-brand-cyan selection:text-brand-navy overflow-x-hidden relative">
+    <main className="flex flex-col min-h-screen bg-brand-navy text-white selection:bg-brand-cyan selection:text-brand-navy overflow-x-hidden relative isolate">
       <ParticleBackground />
       <HeroSection />
       <div id="features"><VisualFeatures /></div>
