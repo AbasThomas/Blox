@@ -75,8 +75,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`${inter.variable} antialiased bg-brand-navy text-foreground overflow-x-hidden`}>
+    <html lang="en" className="bg-brand-navy">
+      <body className={`${inter.variable} antialiased bg-brand-navy text-foreground`}>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{

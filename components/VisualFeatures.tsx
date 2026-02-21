@@ -28,6 +28,8 @@ export default function VisualFeatures() {
   const y = useTransform(scrollYProgress, [0, 1], [80, -80]);
   const rotate = useTransform(scrollYProgress, [0, 1], [0, 360]);
   const scale = useTransform(scrollYProgress, [0, 0.5, 1], [1, 1.05, 1]);
+  const rotateReverse = useTransform(scrollYProgress, [0, 1], [360, 0]);
+  const ringScale = useTransform(scrollYProgress, [0, 0.5, 1], [0.9, 1.15, 0.9]);
 
   const [orbitRadius, setOrbitRadius] = useState(200);
 
@@ -50,20 +52,22 @@ export default function VisualFeatures() {
         <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_at_center,black_30%,transparent_70%)]" />
         
         {/* Gradient Orbs */}
-        <motion.div 
-          animate={{ 
+        <motion.div
+          animate={{
             x: [0, 100, 0],
             y: [0, -50, 0],
           }}
           transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+          style={{ willChange: "transform" }}
           className="absolute top-1/4 left-1/4 w-[800px] h-[800px] bg-linear-to-r from-cyan-500/5 via-blue-500/5 to-transparent rounded-full blur-3xl"
         />
-        <motion.div 
-          animate={{ 
+        <motion.div
+          animate={{
             x: [0, -80, 0],
             y: [0, 60, 0],
           }}
           transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+          style={{ willChange: "transform" }}
           className="absolute bottom-1/4 right-1/4 w-[600px] h-[600px] bg-linear-to-r from-purple-500/5 via-pink-500/5 to-transparent rounded-full blur-3xl"
         />
 
@@ -145,7 +149,7 @@ export default function VisualFeatures() {
         {/* Feature 1: The Assembly Core */}
     <div className="mb-10 flex flex-col items-center">
           <motion.div
-            style={{ y }}
+            style={{ y, willChange: "transform" }}
             initial={{ opacity: 0, scale: 0.8 }}
             whileInView={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1 }}
@@ -158,8 +162,8 @@ export default function VisualFeatures() {
                 key={i}
                 className="absolute rounded-full border-2"
                 style={{
-                  rotate: i % 2 === 0 ? rotate : useTransform(scrollYProgress, [0, 1], [360, 0]),
-                  scale: useTransform(scrollYProgress, [0, 0.5, 1], [0.9, 1.15, 0.9]),
+                  rotate: i % 2 === 0 ? rotate : rotateReverse,
+                  scale: ringScale,
                   width: `min(${120 * i + 30}px, ${60 * i + 15}vw)`,
                   height: `min(${120 * i + 30}px, ${60 * i + 15}vw)`,
                   borderColor: `rgba(34, 211, 238, ${0.15 - i * 0.03})`,
